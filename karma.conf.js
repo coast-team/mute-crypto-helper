@@ -11,7 +11,14 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            "src/*.js", "test/*.js"
+            {
+                pattern: "src/*.js",
+                watched: false
+          },
+            {
+                pattern: "test/rsa.test.js",
+                watched: false
+            }
         ],
 
         // list of files to exclude
@@ -20,19 +27,21 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser available preprocessors:
         // https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            "src/*.js": ["rollup"],
+            // "src/*.js": ["rollup"],
             "test/*.js": ["rollup"]
         },
 
         rollupPreprocessor: {
-            format: "iife", // Helps prevent naming collisions.
-            name: "webcryptowrapper", // Required for 'iife' format.
-            sourcemap: "inline" // Sensible for testing.
+            output: {
+                format: "iife", // Helps prevent naming collisions.
+                name: "cryptoapiwrapper", // Required for 'iife' format.
+                sourcemap: "inline" // Sensible for testing.
+            }
         },
 
         // test results reporter to use possible values: 'dots', 'progress' available reporters:
         // https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ["progress"],
+        reporters: ["spec"],
 
         // web server port
         port: 9876,
@@ -47,10 +56,19 @@ module.exports = function (config) {
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
 
+        // autoWatchBatchDelay: 2000,
+
         // start these browsers available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: [
-            "Firefox", "Chromium"
+            "FirefoxHeadless"
         ],
+
+        customLaunchers: {
+            FirefoxHeadless: {
+                base: 'Firefox',
+                flags: ['-headless'],
+            }
+        },
 
         // Continuous Integration mode if true, Karma captures browsers, runs the tests and exits
         singleRun: false,

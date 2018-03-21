@@ -3,17 +3,18 @@
     "test": "karma start"
   },
   "devDependencies": {
-    "eslint": "^4.13.1",
-    "eslint-config-conaclos": "^2.1.0",
+    "eslint": "^4.19.0",
+    "eslint-config-conaclos": "^2.2.0",
     "eslint-plugin-extra-rules": "^0.8.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "jasmine-core": "^2.8.0",
-    "karma": "^1.7.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.1",
-    "karma-rollup-preprocessor": "^5.0.2",
-    "rollup": "^0.52.1"
+    "karma-rollup-preprocessor": "^5.1.1",
+    "karma-spec-reporter": "^0.0.32",
+    "rollup": "^0.57.1"
   },
   "dependencies": {}
 }
