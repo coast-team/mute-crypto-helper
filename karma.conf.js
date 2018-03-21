@@ -17,6 +17,7 @@ module.exports = function (config) {
           },
             {
                 pattern: "test/*.test.js",
+                watched: false
             }
         ],
 
