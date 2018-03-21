@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with Crypto API Wrapper. See the file COPYING.  If not, see <http://www.gnu.org/licenses/>.
 
-import * as rsa from "../src/rsa"
+import * as asymCrypto from "../src/asymmetricCrypto"
 import * as helper from "./helper"
 
-describe("RSA Crypto wrapper test\n", () => {
+describe("Asymmetric Crypto API wrapper test\n", () => {
     let cryptoSigningKeypair
     let cryptoEncryptionKeypair
     const importKeyError = "TypeError"
@@ -26,10 +26,10 @@ describe("RSA Crypto wrapper test\n", () => {
         "keyDataObj isn't valid ... it should be the same obj as returned by exportKey."
 
     beforeAll((done) => {
-        rsa.generateSigningKey()
+        asymCrypto.generateSigningKey()
             .then((key) => {
                 cryptoSigningKeypair = key
-                return rsa.generateEncryptionKey()
+                return asymCrypto.generateEncryptionKey()
             })
             .then((key2) => {
                 cryptoEncryptionKeypair = key2
@@ -38,84 +38,84 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("isPublicKey", () => {
-        expect(rsa.isPublicKey(cryptoSigningKeypair.publicKey))
+        expect(asymCrypto.isPublicKey(cryptoSigningKeypair.publicKey))
             .toBeTruthy()
-        expect(rsa.isPublicKey(cryptoSigningKeypair.privateKey))
+        expect(asymCrypto.isPublicKey(cryptoSigningKeypair.privateKey))
             .toBeFalsy()
-        expect(rsa.isPublicKey(cryptoEncryptionKeypair.publicKey))
+        expect(asymCrypto.isPublicKey(cryptoEncryptionKeypair.publicKey))
             .toBeTruthy()
-        expect(rsa.isPublicKey(cryptoEncryptionKeypair.privateKey))
+        expect(asymCrypto.isPublicKey(cryptoEncryptionKeypair.privateKey))
             .toBeFalsy()
-        expect(rsa.isPublicKey("test"))
+        expect(asymCrypto.isPublicKey("test"))
             .toBeFalsy()
-        expect(rsa.isPublicKey({}))
+        expect(asymCrypto.isPublicKey({}))
             .toBeFalsy()
     })
 
     it("isPrivateKey", () => {
-        expect(rsa.isPrivateKey(cryptoSigningKeypair.privateKey))
+        expect(asymCrypto.isPrivateKey(cryptoSigningKeypair.privateKey))
             .toBeTruthy()
-        expect(rsa.isPrivateKey(cryptoSigningKeypair.publicKey))
+        expect(asymCrypto.isPrivateKey(cryptoSigningKeypair.publicKey))
             .toBeFalsy()
-        expect(rsa.isPrivateKey(cryptoEncryptionKeypair.privateKey))
+        expect(asymCrypto.isPrivateKey(cryptoEncryptionKeypair.privateKey))
             .toBeTruthy()
-        expect(rsa.isPrivateKey(cryptoEncryptionKeypair.publicKey))
+        expect(asymCrypto.isPrivateKey(cryptoEncryptionKeypair.publicKey))
             .toBeFalsy()
-        expect(rsa.isPrivateKey({}))
+        expect(asymCrypto.isPrivateKey({}))
             .toBeFalsy()
-        expect(rsa.isPrivateKey("test"))
+        expect(asymCrypto.isPrivateKey("test"))
             .toBeFalsy()
     })
 
     it("isCryptoKeyPair", () => {
-        expect(rsa.isCryptoKeyPair(cryptoSigningKeypair))
+        expect(asymCrypto.isCryptoKeyPair(cryptoSigningKeypair))
             .toBeTruthy()
-        expect(rsa.isCryptoKeyPair(cryptoEncryptionKeypair))
+        expect(asymCrypto.isCryptoKeyPair(cryptoEncryptionKeypair))
             .toBeTruthy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: {},
             privateKey: {}
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: cryptoSigningKeypair.publicKey
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             privateKey: cryptoSigningKeypair.privateKey
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: {},
             privateKey: cryptoSigningKeypair.privateKey
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: "test",
             privateKey: cryptoSigningKeypair.privateKey
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: cryptoSigningKeypair.publicKey,
             privateKey: "test"
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair({
+        expect(asymCrypto.isCryptoKeyPair({
             publicKey: cryptoSigningKeypair.privateKey,
             privateKey: cryptoSigningKeypair.publicKey
         }))
             .toBeFalsy()
-        expect(rsa.isCryptoKeyPair("test"))
+        expect(asymCrypto.isCryptoKeyPair("test"))
             .toBeFalsy()
     })
 
     it("exportKey(key), importkey should succeed (key is a signing KeyPair)", (done) => {
-        rsa.exportKey(cryptoSigningKeypair)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoSigningKeypair)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("publicKey") && rsa.isPublicKey(keyPair.publicKey))
+                expect(keyPair.hasOwnProperty("publicKey") && asymCrypto.isPublicKey(keyPair.publicKey))
                     .toBeTruthy()
-                expect(keyPair.hasOwnProperty("privateKey") && rsa.isPrivateKey(keyPair.privateKey))
+                expect(keyPair.hasOwnProperty("privateKey") && asymCrypto.isPrivateKey(keyPair.privateKey))
                     .toBeTruthy()
                 done()
             })
@@ -123,12 +123,12 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("exportKey(key), importkey should succeed (key is a encryption KeyPair)", (done) => {
-        rsa.exportKey(cryptoEncryptionKeypair)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoEncryptionKeypair)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("publicKey") && rsa.isPublicKey(keyPair.publicKey))
+                expect(keyPair.hasOwnProperty("publicKey") && asymCrypto.isPublicKey(keyPair.publicKey))
                     .toBeTruthy()
-                expect(keyPair.hasOwnProperty("privateKey") && rsa.isPrivateKey(keyPair.privateKey))
+                expect(keyPair.hasOwnProperty("privateKey") && asymCrypto.isPrivateKey(keyPair.privateKey))
                     .toBeTruthy()
                 done()
             })
@@ -136,10 +136,10 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("exportKey(key), importkey should succeed (key is a signing public key)", (done) => {
-        rsa.exportKey(cryptoSigningKeypair.publicKey)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoSigningKeypair.publicKey)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("publicKey") && rsa.isPublicKey(keyPair.publicKey))
+                expect(keyPair.hasOwnProperty("publicKey") && asymCrypto.isPublicKey(keyPair.publicKey))
                     .toBeTruthy()
                 done()
             })
@@ -147,10 +147,10 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("exportKey(key), importkey should succeed (key is a signing private key)", (done) => {
-        rsa.exportKey(cryptoSigningKeypair.privateKey)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoSigningKeypair.privateKey)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("privateKey") && rsa.isPrivateKey(keyPair.privateKey))
+                expect(keyPair.hasOwnProperty("privateKey") && asymCrypto.isPrivateKey(keyPair.privateKey))
                     .toBeTruthy()
                 done()
             })
@@ -158,10 +158,10 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("exportKey(key), importkey should succeed (key is a encryption public key)", (done) => {
-        rsa.exportKey(cryptoEncryptionKeypair.publicKey)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoEncryptionKeypair.publicKey)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("publicKey") && rsa.isPublicKey(keyPair.publicKey))
+                expect(keyPair.hasOwnProperty("publicKey") && asymCrypto.isPublicKey(keyPair.publicKey))
                     .toBeTruthy()
                 done()
             })
@@ -169,10 +169,10 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("exportKey(key), importkey should succeed (key is a encryption private key)", (done) => {
-        rsa.exportKey(cryptoEncryptionKeypair.privateKey)
-            .then((keyDataObj) => rsa.importKey(keyDataObj))
+        asymCrypto.exportKey(cryptoEncryptionKeypair.privateKey)
+            .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
             .then((keyPair) => {
-                expect(keyPair.hasOwnProperty("privateKey") && rsa.isPrivateKey(keyPair.privateKey))
+                expect(keyPair.hasOwnProperty("privateKey") && asymCrypto.isPrivateKey(keyPair.privateKey))
                     .toBeTruthy()
                 done()
             })
@@ -184,7 +184,7 @@ describe("RSA Crypto wrapper test\n", () => {
     */
 
     it("importkey(key) should throw a TypeError if key is a string", (done) => {
-        rsa.importKey("test")
+        asymCrypto.importKey("test")
             .then(fail)
             .catch((err) => {
                 expect(err.constructor.name)
@@ -196,7 +196,7 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("importkey(key) should throw a TypeError if key is a empty object", (done) => {
-        rsa.importKey({})
+        asymCrypto.importKey({})
             .then(fail)
             .catch((err) => {
                 expect(err.constructor.name)
@@ -207,7 +207,7 @@ describe("RSA Crypto wrapper test\n", () => {
             })
     })
     it("importkey(key) should throw a TypeError if key is a object that contains null for PK and PrK", (done) => {
-        rsa.importKey({
+        asymCrypto.importKey({
             publicKey: null,
             privateKey: null
         })
@@ -223,7 +223,7 @@ describe("RSA Crypto wrapper test\n", () => {
 
     it("importkey(key) should throw a TypeError if key is a is a object that contains undefined for PK and PrK",
         (done) => {
-            rsa.importKey({
+            asymCrypto.importKey({
                 publicKey: undefined,
                 privateKey: undefined
             })
@@ -237,7 +237,7 @@ describe("RSA Crypto wrapper test\n", () => {
                 })
         })
     it("importkey(key) should throw a TypeError if key is a object that contains a string for PK", (done) => {
-        rsa.importKey({
+        asymCrypto.importKey({
             publicKey: "test",
             privateKey: null
         })
@@ -252,7 +252,7 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("importkey(key) should throw a TypeError if key is a object that contains a string for PrK", (done) => {
-        rsa.importKey({
+        asymCrypto.importKey({
             publicKey: null,
             privateKey: "test"
         })
@@ -266,7 +266,7 @@ describe("RSA Crypto wrapper test\n", () => {
             })
     })
     it("importkey(key) should throw a TypeError if key is a object that contains an empty object for PK", (done) => {
-        rsa.importKey({
+        asymCrypto.importKey({
             publicKey: {},
             privateKey: null
         })
@@ -281,7 +281,7 @@ describe("RSA Crypto wrapper test\n", () => {
     })
 
     it("importkey(key) should throw a TypeError if key is a object that contains an empty object for PrK", (done) => {
-        rsa.importKey({
+        asymCrypto.importKey({
             publicKey: null,
             privateKey: {}
         })
@@ -297,8 +297,8 @@ describe("RSA Crypto wrapper test\n", () => {
 
     it("sign, verify", (done) => {
         const data = helper.randStr()
-        rsa.sign(data, cryptoSigningKeypair.privateKey)
-            .then((signature) => rsa.verifySignature(data, signature, cryptoSigningKeypair.publicKey))
+        asymCrypto.sign(data, cryptoSigningKeypair.privateKey)
+            .then((signature) => asymCrypto.verifySignature(data, signature, cryptoSigningKeypair.publicKey))
             .then((isValid) => {
                 expect(isValid)
                     .toBeTruthy()
@@ -309,8 +309,8 @@ describe("RSA Crypto wrapper test\n", () => {
 
     it("encrypt() decrypt()", (done) => {
         const data = helper.randStr()
-        rsa.encrypt(data, cryptoEncryptionKeypair.publicKey)
-            .then((encryptedData) => rsa.decrypt(encryptedData, cryptoEncryptionKeypair.privateKey))
+        asymCrypto.encrypt(data, cryptoEncryptionKeypair.publicKey)
+            .then((encryptedData) => asymCrypto.decrypt(encryptedData, cryptoEncryptionKeypair.privateKey))
             .then((plaintext) => {
                 expect(plaintext)
                     .toEqual(data)
