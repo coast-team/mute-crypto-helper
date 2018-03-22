@@ -1,8 +1,15 @@
 {
-  "scripts": {
+  "name": "crypto-api-wrapper",
+  "version": "1.0.0",
+  "description": "## Web Crypto wrapper",
+  "main": "dist/crypto-api-wrapper.cjs.js",
+  "directories": {
     "test": "karma start"
   },
+  "dependencies": {},
   "devDependencies": {
+    "@types/jasmine": "^2.8.6",
+    "@types/text-encoding": "0.0.32",
     "eslint": "^4.19.0",
     "eslint-config-conaclos": "^2.2.0",
     "eslint-plugin-extra-rules": "^0.8.1",
@@ -12,9 +19,25 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.1",
-    "karma-rollup-preprocessor": "^5.1.1",
     "karma-spec-reporter": "^0.0.32",
-    "rollup": "^0.57.1"
+    "karma-typescript": "^3.0.12",
+    "typescript": "^2.7.2"
   },
-  "dependencies": {}
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coast-team/crypto-api-wrapper.git"
+  },
+  "keywords": [
+    "crypto",
+    "wrapper"
+  ],
+  "author": "Jean-Philippe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme"
 }

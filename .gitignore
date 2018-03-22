@@ -3,3 +3,7 @@ npm-debug*
 
 # Rollup output folders
 .rolledup*
+
+# Test coverage
+coverage
+dist

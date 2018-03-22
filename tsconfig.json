@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "lib": [ "es2017", "dom"],
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "types": ["text-encoding", "jasmine"],
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+}

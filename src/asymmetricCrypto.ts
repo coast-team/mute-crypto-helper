@@ -60,7 +60,7 @@ export async function exportKey (keyObj) {
 }
 
 export async function importKey (keyDataObj) {
-    const result = {}
+    const result = {} as any
     const err = new TypeError("keyDataObj isn't valid ... it should be the same obj as returned by exportKey.")
     if (keyDataObj.hasOwnProperty("publicKey") && keyDataObj.hasOwnProperty("privateKey")) {
         if ((keyDataObj.publicKey === null || keyDataObj.publicKey === undefined) &&
@@ -147,7 +147,7 @@ export function sign (plaintext, signingPrivateKey) {
         saltLength: helper.saltLength,
     },
         signingPrivateKey,
-        plaintext)
+        plaintext) as Promise<ArrayBuffer>
 }
 
 // signature is an ArrayBuffer
@@ -168,7 +168,7 @@ export function encrypt (plaintext, encryptionPublicKey) {
             //label: Uint8Array([...]) //optional
     },
         encryptionPublicKey,
-        plaintext)
+        plaintext) as Promise<ArrayBuffer>
 }
 
 // signature is an ArrayBuffer

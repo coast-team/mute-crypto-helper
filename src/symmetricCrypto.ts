@@ -27,7 +27,7 @@ export function generateEncryptionKey () {
 
 export function exportKey (keyObj) {
     return window.crypto.subtle.exportKey(helper.keyDataFormat,
-        keyObj)
+        keyObj) as Promise<JsonWebKey>
 }
 
 export function importKey (keyDataObj) {

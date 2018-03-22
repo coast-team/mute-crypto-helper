@@ -7,17 +7,16 @@ module.exports = function (config) {
         basePath: "",
 
         // frameworks to use available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ["jasmine"],
+        frameworks: ["jasmine", "karma-typescript"],
 
         // list of files / patterns to load in the browser
         files: [
             {
-                pattern: "src/*.js",
-                included: false
+                pattern: "src/*.ts",
+                included: true
           },
             {
-                pattern: "test/*.test.js",
-                watched: false
+                pattern: "test/*.ts"
             }
         ],
 
@@ -27,7 +26,34 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser available preprocessors:
         // https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            "test/*.js": ["rollup"]
+            "src/*.ts": ["karma-typescript"],
+            "test/*.ts": ["karma-typescript"]
+        },
+
+        karmaTypescriptConfig: {
+          tsconfig: 'tsconfig.json',
+          compilerOptions: {
+            module: "commonjs",
+            // target: "es2017",
+            // lib: [ "es2017", "dom" ],
+            // moduleResolution: 'node',
+            sourceMap: true,
+            // downlevelIteration: true,
+            // types: [ 'text-encoding']
+          },
+          // bundlerOptions: {
+          //   exclude: ['wrtc', 'text-encoding', 'uws', 'url'],
+          //   addNodeGlobals: false,
+          // },
+          include: ['src/**/*.ts', 'test/**/*.ts'],
+          // coverageOptions: {
+          //   exclude: [/src\/proto\/index\.js/i, /test\/.*/i, /.*polyfills*/i]
+          // },
+          // exclude: ['**/*adapter_factory.js'],
+          reports: {
+            html: {},
+            'text-summary': ''
+          }
         },
 
         rollupPreprocessor: {
@@ -40,7 +66,7 @@ module.exports = function (config) {
 
         // test results reporter to use possible values: 'dots', 'progress' available reporters:
         // https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ["spec"],
+        reporters: ["spec", "karma-typescript"],
 
         // web server port
         port: 9876,
@@ -52,7 +78,7 @@ module.exports = function (config) {
         // config.LOG_DEBUG
         logLevel: config.LOG_INFO,
 
-        autoWatch: false,
+        autoWatch: true,
 
         // start these browsers available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: [
@@ -67,7 +93,7 @@ module.exports = function (config) {
         },
 
         // Continuous Integration mode if true, Karma captures browsers, runs the tests and exits
-        singleRun: true,
+        singleRun: false,
 
         // Concurrency level how many browser should be started simultaneous
         concurrency: Infinity
