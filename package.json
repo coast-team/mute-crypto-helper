@@ -3,17 +3,10 @@
   "version": "1.0.0",
   "description": "## Web Crypto wrapper",
   "main": "dist/crypto-api-wrapper.cjs.js",
-  "directories": {
-    "test": "karma start"
-  },
   "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
     "@types/text-encoding": "0.0.32",
-    "eslint": "^4.19.0",
-    "eslint-config-conaclos": "^2.2.0",
-    "eslint-plugin-extra-rules": "^0.8.1",
-    "eslint-plugin-promise": "^3.7.0",
     "jasmine-core": "^3.1.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -21,10 +14,12 @@
     "karma-jasmine": "^1.1.1",
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
+    "tslint": "^5.9.1",
+    "tslint-eslint-rules": "^5.1.0",
     "typescript": "^2.7.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -35,7 +30,7 @@
     "wrapper"
   ],
   "author": "Jean-Philippe",
-  "license": "MIT",
+  "license": "Apache 2",
   "bugs": {
     "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
   },
