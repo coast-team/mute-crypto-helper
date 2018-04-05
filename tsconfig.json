@@ -6,6 +6,11 @@
     "moduleResolution": "node",
     "downlevelIteration": true,
     "types": ["text-encoding", "jasmine"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
   },
   "include": [
     "src/**/*",

@@ -17,7 +17,12 @@
 
 import * as helper from './asymmetricCryptoHelper'
 
-export function generateSigningKey () {
+export interface ICryptoKeyPairData {
+  readonly publicKey: JsonWebKey
+  readonly privateKey: JsonWebKey
+}
+
+export function generateSigningKey (): Promise<CryptoKeyPair> {
   return window.crypto.subtle.generateKey({
     name: helper.signingAlgorithm,
     modulusLength: helper.keySize,
@@ -26,10 +31,10 @@ export function generateSigningKey () {
       name: helper.hashAlgorithm, // slightly better perf on 64bits proc ?
     },
   }, true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['sign', 'verify'])
+    ['sign', 'verify']) as Promise<CryptoKeyPair>
 }
 
-export function generateEncryptionKey () {
+export function generateEncryptionKey (): Promise<CryptoKeyPair> {
   return window.crypto.subtle.generateKey({
     name: helper.encryptionAlgorithm,
     modulusLength: helper.keySize, // can be 1024, 2048, or 4096
@@ -38,166 +43,107 @@ export function generateEncryptionKey () {
       name: helper.hashAlgorithm, // slightly better perf on 64bits proc ?
     },
   }, true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['encrypt', 'decrypt'])
+    ['encrypt', 'decrypt']) as Promise<CryptoKeyPair>
 }
 
-export async function exportKey (keyObj) {
-  const result = {
-    publicKey: null,
-    privateKey: null,
-  }
-  if (isCryptoKeyPair(keyObj)) {
-    result.publicKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, keyObj.publicKey)
-    result.privateKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, keyObj.privateKey)
-  } else if (isPublicKey(keyObj)) {
-    result.publicKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, keyObj)
-  } else if (isPrivateKey(keyObj)) {
-    result.privateKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, keyObj)
-  } else {
-    return Promise.reject(new TypeError(`KeyObj should be one of these : \
-      A valid CryptoKeyPair, a valid PublicKey or a valid PrivateKey ...`))
-  }
-  return result
+export async function exportKey (cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKeyPairData> {
+  const publicKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, cryptoKeyPair.publicKey)
+  const privateKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, cryptoKeyPair.privateKey)
+  return { publicKey, privateKey } as ICryptoKeyPairData
 }
 
-export async function importKey (keyDataObj) {
-  const result = {} as any
-  const err = new TypeError('keyDataObj isn\'t valid ... it should be the same obj as returned by exportKey.')
-  if (keyDataObj.hasOwnProperty('publicKey') && keyDataObj.hasOwnProperty('privateKey')) {
-    if ((keyDataObj.publicKey === null || keyDataObj.publicKey === undefined) &&
-      (keyDataObj.privateKey === null || keyDataObj.privateKey === undefined)) {
-      throw err
-    }
-    if (keyDataObj.publicKey !== null && keyDataObj.publicKey !== undefined) {
-      if (keyDataObj.publicKey.hasOwnProperty('key_ops')) {
-        if (keyDataObj.publicKey.key_ops.includes('verify')) {
-          result.publicKey = await importSigningKey('public', keyDataObj.publicKey)
-        } else if (keyDataObj.publicKey.key_ops.includes('encrypt')) {
-          result.publicKey = await importEncryptionKey('public', keyDataObj.publicKey)
-        } else {
-          throw err
-        }
-      } else {
-        throw err
-      }
-    }
-    if (keyDataObj.privateKey !== null && keyDataObj.privateKey !== undefined) {
-      if (keyDataObj.privateKey.hasOwnProperty('key_ops')) {
-        if (keyDataObj.privateKey.key_ops.includes('sign')) {
-          result.privateKey = await importSigningKey('private', keyDataObj.privateKey)
-        } else if (keyDataObj.privateKey.key_ops.includes('decrypt')) {
-          result.privateKey = await importEncryptionKey('private', keyDataObj.privateKey)
-        } else {
-          throw err
-        }
-      } else {
-        throw err
-      }
+export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
+  const UndefinedKeyOpsError = Promise.reject(new TypeError(`key_ops should not be undefined.\
+    cryptoKeyPairData should be the same object as returned by exportKey ...`))
+  let publicKey: CryptoKey
+  let privateKey: CryptoKey
+  if (cryptoKeyPairData.publicKey.key_ops) {
+    if (cryptoKeyPairData.publicKey.key_ops.includes('verify')) {
+      publicKey = await window.crypto.subtle.importKey(helper.keyDataFormat, cryptoKeyPairData.publicKey,
+        {
+          name: helper.signingAlgorithm, hash: { name: helper.hashAlgorithm },
+        },
+          false, ['verify'])
+    } else if (cryptoKeyPairData.publicKey.key_ops.includes('encrypt')) {
+      publicKey = await window.crypto.subtle.importKey(helper.keyDataFormat, cryptoKeyPairData.publicKey,
+        {
+          name: helper.encryptionAlgorithm, hash: { name: helper.hashAlgorithm },
+        },
+          false, ['encrypt'])
+    } else {
+      return UndefinedKeyOpsError
     }
   } else {
-    throw err
+    return UndefinedKeyOpsError
   }
-  return result
 
-}
+  if (cryptoKeyPairData.privateKey.key_ops) {
+    if (cryptoKeyPairData.privateKey.key_ops.includes('sign')) {
+      privateKey = await window.crypto.subtle.importKey(helper.keyDataFormat, cryptoKeyPairData.privateKey,
+        {
+          name: helper.signingAlgorithm, hash: { name: helper.hashAlgorithm },
+        },
+          false, ['sign'])
+    } else if (cryptoKeyPairData.privateKey.key_ops.includes('decrypt')) {
+      privateKey = await window.crypto.subtle.importKey(helper.keyDataFormat, cryptoKeyPairData.privateKey,
+        {
+          name: helper.encryptionAlgorithm, hash: { name: helper.hashAlgorithm },
+        },
+          false, ['decrypt'])
+    } else {
+      return UndefinedKeyOpsError
+    }
+  } else {
+    return UndefinedKeyOpsError
 
-function importSigningKey (keyType, keyData) {
-  let result
-  switch (keyType) {
-  case 'public':
-    result = genericImportKey(helper.signingAlgorithm, ['verify'], keyData)
-    break
-  case 'private':
-    result = genericImportKey(helper.signingAlgorithm, ['sign'], keyData)
-    break
-  default:
-    result = Promise.reject(new TypeError('KeyType should be either \'public\' or \'private\''))
   }
-  return result
+  return { publicKey, privateKey } as CryptoKeyPair
 }
 
-function importEncryptionKey (keyType, keyData) {
-  let result
-  switch (keyType) {
-  case 'public':
-    result = genericImportKey(helper.encryptionAlgorithm, ['encrypt'], keyData)
-    break
-  case 'private':
-    result = genericImportKey(helper.encryptionAlgorithm, ['decrypt'], keyData)
-    break
-  default:
-    result = Promise.reject(new TypeError('KeyType should be either \'public\' or \'private\''))
-  }
-  return result
-}
-
-function genericImportKey (algorithm, usagesArray, keyData) {
-  return window.crypto.subtle.importKey(helper.keyDataFormat, keyData, {
-    name: algorithm,
-    hash: {
-      name: helper.hashAlgorithm,
-    },
-  },
-    false, usagesArray)
-}
-
-// data is an ArrayBuffer
-export function sign (plaintext, signingPrivateKey) {
+export function sign (plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
   return window.crypto.subtle.sign({
     name: helper.signingAlgorithm,
     saltLength: helper.saltLength,
   },
     signingPrivateKey,
-    plaintext) as Promise<ArrayBuffer>
+    plaintext).then((signature) => new Uint8Array(signature)) as Promise<Uint8Array>
 }
 
 // signature is an ArrayBuffer
-export function verifySignature (plaintext, signature, signingPublicKey) {
+export function verifySignature (plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey) {
   return window.crypto.subtle.verify({
     name: helper.signingAlgorithm,
     saltLength: helper.saltLength,
   },
     signingPublicKey,
     signature,
-    plaintext)
+    plaintext) as Promise<boolean>
 }
 
 // data is an ArrayBuffer
-export function encrypt (plaintext, encryptionPublicKey) {
+export function encrypt (plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
   return window.crypto.subtle.encrypt({
     name: helper.encryptionAlgorithm,
     // label: Uint8Array([...]) //optional
   },
     encryptionPublicKey,
-    plaintext) as Promise<ArrayBuffer>
+    plaintext).then((ciphertext) => new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
 // signature is an ArrayBuffer
-export function decrypt (ciphertext, encryptionPrivateKey) {
+export function decrypt (ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey) {
   return window.crypto.subtle.decrypt({
     name: helper.encryptionAlgorithm,
     // label: Uint8Array([...]) //optional
   },
     encryptionPrivateKey,
-    ciphertext)
-    .then((buffer) => new Uint8Array(buffer))
+    ciphertext).then((plaintext) => new Uint8Array(plaintext)) as Promise<Uint8Array>
 }
 
-export function isCryptoKeyPair (obj) {
-  return obj.hasOwnProperty('privateKey') &&
-    isPrivateKey(obj.privateKey) &&
-    obj.hasOwnProperty('publicKey') &&
-    isPublicKey(obj.publicKey)
+export function isPublicKey (cryptoKey: CryptoKey) {
+  return cryptoKey.type === 'public'
 }
 
-export function isCryptoKey (key) {
-  return key instanceof CryptoKey
-}
-
-export function isPublicKey (cryptoKey) {
-  return isCryptoKey(cryptoKey) && cryptoKey.type === 'public'
-}
-
-export function isPrivateKey (cryptoKey) {
-  return isCryptoKey(cryptoKey) && cryptoKey.type === 'private'
+export function isPrivateKey (cryptoKey: CryptoKey) {
+  return cryptoKey.type === 'private'
 }

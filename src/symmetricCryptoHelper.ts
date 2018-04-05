@@ -24,18 +24,21 @@ export function generateNonce () {
   return window.crypto.getRandomValues(new Uint8Array(nonceLength))
 }
 
-export function joinNonceCiphertext (nonce, ciphertext) {
-  const result = new Uint8Array(nonce.length + ciphertext.length)
-  result.set(nonce)
-  result.set(ciphertext, nonce.length)
-  return result
+export function joinNonceCiphertext (nonce: Uint8Array, ciphertext: Uint8Array): Promise<Uint8Array> {
+  return new Promise((resolve) => {
+    const result = new Uint8Array(nonce.length + ciphertext.length)
+    result.set(nonce)
+    result.set(ciphertext, nonce.length)
+    resolve(result)
+  })
 }
 
-export function splitNonceCiphertext (data) {
-  const nonce = data.slice(0, nonceLength)
-  const ciphertext = data.slice(nonceLength, data.length)
-  return {
-    nonce,
-    ciphertext,
-  }
+export function splitNonceCiphertext (data: Uint8Array): Promise<[Uint8Array, Uint8Array]> {
+  return new Promise((resolve) => {
+    let result: [Uint8Array, Uint8Array]
+    const nonce = data.slice(0, nonceLength)
+    const ciphertext = data.slice(nonceLength, data.length)
+    result = [nonce, ciphertext]
+    resolve(result)
+  })
 }

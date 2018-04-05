@@ -27,19 +27,10 @@ export function randStr () {
   return str2buffer(str)
 }
 
-export function str2buffer (str) {
+export function str2buffer (str: string) {
   return encoder.encode(str)
 }
 
-export function buffer2str (buffer) {
+export function buffer2str (buffer: BufferSource) {
   return decoder.decode(buffer)
-}
-
-export function isEmpty (obj) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      return false
-    }
-  }
-  return true
 }

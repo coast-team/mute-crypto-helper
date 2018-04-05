@@ -22,25 +22,25 @@ export function generateEncryptionKey () {
     name: helper.encryptionAlgorithm,
     length: helper.keySize,
   }, true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['encrypt', 'decrypt'])
+    ['encrypt', 'decrypt']) as Promise<CryptoKey>
 }
 
-export function exportKey (keyObj) {
+export function exportKey (cryptoKey: CryptoKey) {
   return window.crypto.subtle.exportKey(helper.keyDataFormat,
-    keyObj) as Promise<JsonWebKey>
+    cryptoKey) as Promise<JsonWebKey>
 }
 
-export function importKey (keyDataObj) {
+export function importKey (cryptoKeyData: JsonWebKey) {
   return window.crypto.subtle.importKey(helper.keyDataFormat,
-    keyDataObj, {
+    cryptoKeyData, {
       name: helper.encryptionAlgorithm,
     },
-    false, ['encrypt', 'decrypt'])
+    false, ['encrypt', 'decrypt']) as Promise<CryptoKey>
 
 }
 
 // data is an ArrayBuffer
-export async function encrypt (plaintext, encryptionKey) {
+export async function encrypt (plaintext: BufferSource, encryptionKey: CryptoKey) {
   const nonce = helper.generateNonce()
 
   const ciphertext = await window.crypto.subtle.encrypt({
@@ -51,15 +51,15 @@ export async function encrypt (plaintext, encryptionKey) {
     encryptionKey,
     plaintext)
 
-  return helper.joinNonceCiphertext(nonce, new Uint8Array(ciphertext))
+  return helper.joinNonceCiphertext(nonce, new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
 // signature is an ArrayBuffer
-export function decrypt (data, encryptionPrivateKey) {
-  const {
+export async function decrypt (data: Uint8Array, encryptionPrivateKey: CryptoKey) {
+  const [
     nonce,
     ciphertext,
-  } = helper.splitNonceCiphertext(data)
+  ] = await helper.splitNonceCiphertext(data)
   return window.crypto.subtle.decrypt({
     name: helper.encryptionAlgorithm,
     counter: nonce,
@@ -70,6 +70,6 @@ export function decrypt (data, encryptionPrivateKey) {
     .then((buffer) => new Uint8Array(buffer))
 }
 
-export function isSecretCryptoKey (obj) {
-  return obj instanceof CryptoKey && obj.type === 'secret'
+export function isSecretCryptoKey (crytoKey: CryptoKey) {
+  return crytoKey.type === 'secret'
 }

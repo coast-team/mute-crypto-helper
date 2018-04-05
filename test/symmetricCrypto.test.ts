@@ -20,7 +20,7 @@ import * as symCryptoHelper from '../src/symmetricCryptoHelper'
 import * as helper from './helper'
 
 describe('Symmetric Crypto API wrapper test\n', () => {
-  let encryptionKey
+  let encryptionKey: CryptoKey
 
   beforeAll((done) => {
     symCrypto.generateEncryptionKey()
@@ -33,15 +33,6 @@ describe('Symmetric Crypto API wrapper test\n', () => {
   it('isSecretCryptoKey', () => {
     expect(symCrypto.isSecretCryptoKey(encryptionKey))
       .toBeTruthy()
-    expect(symCrypto.isSecretCryptoKey({
-      publicKey: {},
-      privateKey: {},
-    }))
-      .toBeFalsy()
-    expect(symCrypto.isSecretCryptoKey('test'))
-      .toBeFalsy()
-    expect(symCrypto.isSecretCryptoKey({}))
-      .toBeFalsy()
   })
 
   it('exportKey(key), importkey(keyData) should succeed (key is a secret crypto key)', (done) => {
@@ -59,25 +50,34 @@ describe('Symmetric Crypto API wrapper test\n', () => {
     const s = helper.randStr()
     const nonce = symCryptoHelper.generateNonce()
 
-    const data = symCryptoHelper.joinNonceCiphertext(nonce, s)
-
-    const {
-      nonce: nonce2,
-      ciphertext: s2,
-    } = symCryptoHelper.splitNonceCiphertext(data)
-
-    expect(nonce2)
-      .toEqual(nonce)
-    expect(s2)
-      .toEqual(s)
+    symCryptoHelper.joinNonceCiphertext(nonce, s).then((ciphertext) => {
+      symCryptoHelper.splitNonceCiphertext(ciphertext).then(([nonce2, s2]) => {
+        expect(nonce2)
+          .toEqual(nonce)
+        expect(s2)
+          .toEqual(s)
+      }).catch(fail)
+    }).catch(fail)
   })
 
-  it('encrypt() decrypt()', (done) => {
+  it('encrypt() decrypt(), random string test', (done) => {
     const s = helper.randStr()
     symCrypto.encrypt(s, encryptionKey)
       .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
       .then((plaintext) => {
         expect(plaintext)
+          .toEqual(s)
+        done()
+      })
+      .catch(fail)
+  })
+
+  it('encrypt() decrypt(), real world test', (done) => {
+    const s = 'Hello, world'
+    symCrypto.encrypt(helper.str2buffer(s), encryptionKey)
+      .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
+      .then((plaintext) => {
+        expect(helper.buffer2str(plaintext))
           .toEqual(s)
         done()
       })

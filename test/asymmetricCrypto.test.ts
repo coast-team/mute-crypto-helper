@@ -19,11 +19,11 @@ import * as asymCrypto from '../src/asymmetricCrypto'
 import * as helper from './helper'
 
 describe('Asymmetric Crypto API wrapper test\n', () => {
-  let cryptoSigningKeypair
-  let cryptoEncryptionKeypair
+  let cryptoSigningKeypair: CryptoKeyPair
+  let cryptoEncryptionKeypair: CryptoKeyPair
   const importKeyError = 'TypeError'
-  const importKeyErrorMessage =
-    'keyDataObj isn\'t valid ... it should be the same obj as returned by exportKey.'
+  const UndefinedKeyOpsError = `key_ops should not be undefined.\
+    cryptoKeyPairData should be the same object as returned by exportKey ...`
 
   beforeAll((done) => {
     asymCrypto.generateSigningKey()
@@ -46,10 +46,6 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
       .toBeTruthy()
     expect(asymCrypto.isPublicKey(cryptoEncryptionKeypair.privateKey))
       .toBeFalsy()
-    expect(asymCrypto.isPublicKey('test'))
-      .toBeFalsy()
-    expect(asymCrypto.isPublicKey({}))
-      .toBeFalsy()
   })
 
   it('isPrivateKey', () => {
@@ -61,61 +57,15 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
       .toBeTruthy()
     expect(asymCrypto.isPrivateKey(cryptoEncryptionKeypair.publicKey))
       .toBeFalsy()
-    expect(asymCrypto.isPrivateKey({}))
-      .toBeFalsy()
-    expect(asymCrypto.isPrivateKey('test'))
-      .toBeFalsy()
-  })
-
-  it('isCryptoKeyPair', () => {
-    expect(asymCrypto.isCryptoKeyPair(cryptoSigningKeypair))
-      .toBeTruthy()
-    expect(asymCrypto.isCryptoKeyPair(cryptoEncryptionKeypair))
-      .toBeTruthy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: {},
-      privateKey: {},
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: cryptoSigningKeypair.publicKey,
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      privateKey: cryptoSigningKeypair.privateKey,
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: {},
-      privateKey: cryptoSigningKeypair.privateKey,
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: 'test',
-      privateKey: cryptoSigningKeypair.privateKey,
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: cryptoSigningKeypair.publicKey,
-      privateKey: 'test',
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair({
-      publicKey: cryptoSigningKeypair.privateKey,
-      privateKey: cryptoSigningKeypair.publicKey,
-    }))
-      .toBeFalsy()
-    expect(asymCrypto.isCryptoKeyPair('test'))
-      .toBeFalsy()
   })
 
   it('exportKey(key), importkey should succeed (key is a signing KeyPair)', (done) => {
     asymCrypto.exportKey(cryptoSigningKeypair)
       .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
       .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('publicKey') && asymCrypto.isPublicKey(keyPair.publicKey))
+        expect(asymCrypto.isPublicKey(keyPair.publicKey))
           .toBeTruthy()
-        expect(keyPair.hasOwnProperty('privateKey') && asymCrypto.isPrivateKey(keyPair.privateKey))
+        expect(asymCrypto.isPrivateKey(keyPair.privateKey))
           .toBeTruthy()
         done()
       })
@@ -126,53 +76,9 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
     asymCrypto.exportKey(cryptoEncryptionKeypair)
       .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
       .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('publicKey') && asymCrypto.isPublicKey(keyPair.publicKey))
+        expect(asymCrypto.isPublicKey(keyPair.publicKey))
           .toBeTruthy()
-        expect(keyPair.hasOwnProperty('privateKey') && asymCrypto.isPrivateKey(keyPair.privateKey))
-          .toBeTruthy()
-        done()
-      })
-      .catch(fail)
-  })
-
-  it('exportKey(key), importkey should succeed (key is a signing public key)', (done) => {
-    asymCrypto.exportKey(cryptoSigningKeypair.publicKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('publicKey') && asymCrypto.isPublicKey(keyPair.publicKey))
-          .toBeTruthy()
-        done()
-      })
-      .catch(fail)
-  })
-
-  it('exportKey(key), importkey should succeed (key is a signing private key)', (done) => {
-    asymCrypto.exportKey(cryptoSigningKeypair.privateKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('privateKey') && asymCrypto.isPrivateKey(keyPair.privateKey))
-          .toBeTruthy()
-        done()
-      })
-      .catch(fail)
-  })
-
-  it('exportKey(key), importkey should succeed (key is a encryption public key)', (done) => {
-    asymCrypto.exportKey(cryptoEncryptionKeypair.publicKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('publicKey') && asymCrypto.isPublicKey(keyPair.publicKey))
-          .toBeTruthy()
-        done()
-      })
-      .catch(fail)
-  })
-
-  it('exportKey(key), importkey should succeed (key is a encryption private key)', (done) => {
-    asymCrypto.exportKey(cryptoEncryptionKeypair.privateKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(keyPair.hasOwnProperty('privateKey') && asymCrypto.isPrivateKey(keyPair.privateKey))
+        expect(asymCrypto.isPrivateKey(keyPair.privateKey))
           .toBeTruthy()
         done()
       })
@@ -183,114 +89,141 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
     IMPORTKEY (fail)
   */
 
-  it('importkey(key) should throw a TypeError if key is a string', (done) => {
-    asymCrypto.importKey('test')
-      .then(fail)
+  it('importkey(keypair) should throw a TypeError if the private key is a JsonWebKey that do\
+   not contain key_ops', (done) => {
+    asymCrypto.importKey({
+      publicKey: { kty: 'RSA', e: 'AQAB', n: `vWJiVP3tUiJ_-lImHdJo6kHqKFHQFulcPu7jbiiJ56-Hy8MXW_iCxYbQ3iqIsQlR\
+        TxSn5NLuqoejWM2OntJSPOEp79GRh5Fjri6l6BbVlViWoVAy-NW54VRJput4QXHKFpu2h_SVMwNvVdC0UyMIPqqFz3rZsst2tQ7fVjXyO\
+        cNTrVOBEqaWW8T-jYbd2j_BcuOz3Rc7AsgSPbDK1B6-W41Ibp1SWZtWuUEY1IVSGtT5iz1vLDLUxxT3QyCyXfuVmL5qrQ-nV_XR3zdoKE\
+        n6eKOD1Bx9rAJVYVHqrApRsrjIiL4vPCyIZE\YQ1cbg4Ux1DsRqTVWUTPVVE5D-Q2_1FQ`, alg: 'RSA-OAEP-256',
+        ext: true, key_ops: ['encrypt']},
+      privateKey: { alg: 'PS256', d: `YrvV7PBkjiNEljI0dpJJAFjT-YhJ_dZ-uzWB2VNU01vLaCL4-i_EpAY2Ns-P_iIemw30RnrXZ\
+        4xCoimEXjI6SRApIl7DChrw9ct0GLGzNtz-Uf2Q49sAtcUNfkQCcAV-kB-Fr_q5cR_2pAoc3dY4hjyM8_5taZ1dlm8ov3OwdQjmzd\
+        fhmzwtHmpw805xFdMAZmUtIRelkyaj6Uc9ja4PMO5-Kmvf9a5hPdwJF3nGVuy5IiaN_cv5_T4jd3p5SRDXvSf4h_Wr0BqltIDpE3bv\
+        b1pJP35oXfhmaoOND4s9WflNxjP2A53o_TJtpblUkd84bnaEovSymJrj0hzW1FKr1Q`, dp: `m_zy8LjAiVxB8px29qBtkIKtGUfVih\
+        a6Zgq58Ley6U2QXXmPaSbex7iBtHyrAP4UNQTaORoTAta_G1Q33InQp0W0c0n4AqVxVTzEuotZgSPf8atQZHsPpadUDjlVvg3SWCn2D\
+        55c6iygxrqN5j1tpc_BCJYxtfnR43jSJzfzvbU`, dq: `rZ5DbleUPf6ApVYs3rWq21HmOkUS3kKijcud-mVImcPYqXo2eBV__\
+        Y4qwWrTB8xSwcQEo6HSNyM59bUx-OJDEPXD53SDqubqQN6NL09jZ1lkDTTNQSo8xWZLt26S5d8g_3HdasL0znsUcu9bcMxld-NIh\
+        Y4yJOmvprH41ytNr1k`, e: 'AQAB', ext: true, kty: 'RSA', n: `3Eac1B6i-qSr4o0SQoI89xQ3drpGBipigAw-phrIH2nRF\
+        oJWto3kWKdgojbdx2YRtbqmo2_2MMp633TCquANNJNZwxvyiNj0Q2dIJ69nvapIipkrWLGBwZd10CSbqb2o5I28Jr_VKDELZzyxahKB\
+        Kkw0EQ7d1Y6oZK3jC9WGBqsf1Bzd5SOnvZO6fsvCoY8f260-YoSWoQ5sR_EGKpb4u2EuhYTGfYBtBo9u5zJvRdr37__ctKCd8pbEGp0\
+        mw5IzbbEg2BpExHCCMNOihwr-PUQi4VvWQEsiz30RvPyO1p1YgDNVZxueJgxI09UjapS6WOALjicwAxs6hZ3XvLZ-fw`, p: `_aJsmCc\
+        H8-L0-r5f4AksMvcbBMT85mfPgWkqo8z1K70klzoE-KjYcnkrKGW4keLXiSi7rxW8OTmEnjJZTj9RhVtEnUA71Y5vxsZAtC1mc427d\
+        yKT1Ysvhpr1u7fsiQ-Jv9PIbCePWtKBKIFLF2gzVwkzxCOvIok3DK6SkL_U2Ks`, q: `3lSKpIF38wxUGGeTVnW36flsxw_h7Hq\
+        oImfX7s8VfpYtOd6GfUDwMtAH69v3fUz0shIFD3gNAqiJtC7mB3wAxsUCTA4FihotUYJQ9s8VIf0TZC1kTY0AEXZ8isqEx37wWyxp\
+        1B99yo50s0GMz7A8r__Xi_vWMpS0623lGBngGX0`, qi: 'thTQiQFnYH9fbGXLNDY6_hoCCpUlAjACw3atW4PH7IApF9wEVQp5lH4C6\
+        OVb1QUeu-kHD1ae4UoMeGmtMGzAfUn2ZOEB3V88MSejeYJz6dLLgdZXHmJzZOtqWsYE4F9KVBb7xdOvYjMiCNRqCz3tCqY1sgTa3pXI\
+        xbb_GZQt6Ts'},
+    }).then(fail)
       .catch((err) => {
         expect(err.constructor.name)
           .toEqual(importKeyError)
         expect(err.message)
-          .toEqual(importKeyErrorMessage)
+          .toEqual(UndefinedKeyOpsError)
         done()
       })
   })
 
-  it('importkey(key) should throw a TypeError if key is a empty object', (done) => {
-    asymCrypto.importKey({})
-      .then(fail)
-      .catch((err) => {
-        expect(err.constructor.name)
-          .toEqual(importKeyError)
-        expect(err.message)
-          .toEqual(importKeyErrorMessage)
-        done()
-      })
-  })
-  it('importkey(key) should throw a TypeError if key is a object that contains null for PK and PrK', (done) => {
+  it('importkey(publicKey) should throw a TypeError if the publicKey is a JsonWebKey that do not\
+   contain key_ops', (done) => {
     asymCrypto.importKey({
-      publicKey: null,
-      privateKey: null,
-    })
-      .then(fail)
+      publicKey: { kty: 'RSA', e: 'AQAB', n: `vWJiVP3tUiJ_-lImHdJo6kHqKFHQFulcPu7jbiiJ56-Hy8MXW_iCxYbQ3iqIsQlR\
+        TxSn5NLuqoejWM2OntJSPOEp79GRh5Fjri6l6BbVlViWoVAy-NW54VRJput4QXHKFpu2h_SVMwNvVdC0UyMIPqqFz3rZsst2tQ7fVjXyO\
+        cNTrVOBEqaWW8T-jYbd2j_BcuOz3Rc7AsgSPbDK1B6-W41Ibp1SWZtWuUEY1IVSGtT5iz1vLDLUxxT3QyCyXfuVmL5qrQ-nV_XR3zdoKE\
+        n6eKOD1Bx9rAJVYVHqrApRsrjIiL4vPCyIZE\YQ1cbg4Ux1DsRqTVWUTPVVE5D-Q2_1FQ`, alg: 'RSA-OAEP-256', ext: true},
+      privateKey: { alg: 'PS256', d: `YrvV7PBkjiNEljI0dpJJAFjT-YhJ_dZ-uzWB2VNU01vLaCL4-i_EpAY2Ns-P_iIemw30RnrXZ\
+        4xCoimEXjI6SRApIl7DChrw9ct0GLGzNtz-Uf2Q49sAtcUNfkQCcAV-kB-Fr_q5cR_2pAoc3dY4hjyM8_5taZ1dlm8ov3OwdQjmzd\
+        fhmzwtHmpw805xFdMAZmUtIRelkyaj6Uc9ja4PMO5-Kmvf9a5hPdwJF3nGVuy5IiaN_cv5_T4jd3p5SRDXvSf4h_Wr0BqltIDpE3bv\
+        b1pJP35oXfhmaoOND4s9WflNxjP2A53o_TJtpblUkd84bnaEovSymJrj0hzW1FKr1Q`, dp: `m_zy8LjAiVxB8px29qBtkIKtGUfVih\
+        a6Zgq58Ley6U2QXXmPaSbex7iBtHyrAP4UNQTaORoTAta_G1Q33InQp0W0c0n4AqVxVTzEuotZgSPf8atQZHsPpadUDjlVvg3SWCn2D\
+        55c6iygxrqN5j1tpc_BCJYxtfnR43jSJzfzvbU`, dq: `rZ5DbleUPf6ApVYs3rWq21HmOkUS3kKijcud-mVImcPYqXo2eBV__\
+        Y4qwWrTB8xSwcQEo6HSNyM59bUx-OJDEPXD53SDqubqQN6NL09jZ1lkDTTNQSo8xWZLt26S5d8g_3HdasL0znsUcu9bcMxld-NIh\
+        Y4yJOmvprH41ytNr1k`, e: 'AQAB', ext: true, kty: 'RSA', n: `3Eac1B6i-qSr4o0SQoI89xQ3drpGBipigAw-phrIH2nRF\
+        oJWto3kWKdgojbdx2YRtbqmo2_2MMp633TCquANNJNZwxvyiNj0Q2dIJ69nvapIipkrWLGBwZd10CSbqb2o5I28Jr_VKDELZzyxahKB\
+        Kkw0EQ7d1Y6oZK3jC9WGBqsf1Bzd5SOnvZO6fsvCoY8f260-YoSWoQ5sR_EGKpb4u2EuhYTGfYBtBo9u5zJvRdr37__ctKCd8pbEGp0\
+        mw5IzbbEg2BpExHCCMNOihwr-PUQi4VvWQEsiz30RvPyO1p1YgDNVZxueJgxI09UjapS6WOALjicwAxs6hZ3XvLZ-fw`, p: `_aJsmCc\
+        H8-L0-r5f4AksMvcbBMT85mfPgWkqo8z1K70klzoE-KjYcnkrKGW4keLXiSi7rxW8OTmEnjJZTj9RhVtEnUA71Y5vxsZAtC1mc427d\
+        yKT1Ysvhpr1u7fsiQ-Jv9PIbCePWtKBKIFLF2gzVwkzxCOvIok3DK6SkL_U2Ks`, q: `3lSKpIF38wxUGGeTVnW36flsxw_h7Hq\
+        oImfX7s8VfpYtOd6GfUDwMtAH69v3fUz0shIFD3gNAqiJtC7mB3wAxsUCTA4FihotUYJQ9s8VIf0TZC1kTY0AEXZ8isqEx37wWyxp\
+        1B99yo50s0GMz7A8r__Xi_vWMpS0623lGBngGX0`, qi: 'thTQiQFnYH9fbGXLNDY6_hoCCpUlAjACw3atW4PH7IApF9wEVQp5lH4C6\
+        OVb1QUeu-kHD1ae4UoMeGmtMGzAfUn2ZOEB3V88MSejeYJz6dLLgdZXHmJzZOtqWsYE4F9KVBb7xdOvYjMiCNRqCz3tCqY1sgTa3pXI\
+        xbb_GZQt6Ts', key_ops: ['decrypt']},
+    }).then(fail)
       .catch((err) => {
         expect(err.constructor.name)
           .toEqual(importKeyError)
         expect(err.message)
-          .toEqual(importKeyErrorMessage)
-        done()
-      })
-  })
-
-  it('importkey(key) should throw a TypeError if key is a is a object that contains undefined for PK and PrK',
-    (done) => {
-      asymCrypto.importKey({
-        publicKey: undefined,
-        privateKey: undefined,
-      })
-        .then(fail)
-        .catch((err) => {
-          expect(err.constructor.name)
-            .toEqual(importKeyError)
-          expect(err.message)
-            .toEqual(importKeyErrorMessage)
-          done()
-        })
-    })
-  it('importkey(key) should throw a TypeError if key is a object that contains a string for PK', (done) => {
-    asymCrypto.importKey({
-      publicKey: 'test',
-      privateKey: null,
-    })
-      .then(fail)
-      .catch((err) => {
-        expect(err.constructor.name)
-          .toEqual(importKeyError)
-        expect(err.message)
-          .toEqual(importKeyErrorMessage)
+          .toEqual(UndefinedKeyOpsError)
         done()
       })
   })
 
-  it('importkey(key) should throw a TypeError if key is a object that contains a string for PrK', (done) => {
+  it('importkey(keypair) should throw a TypeError if the publicKey is a JsonWebKey that do\
+   have wrong content for key_ops', (done) => {
     asymCrypto.importKey({
-      publicKey: null,
-      privateKey: 'test',
-    })
-      .then(fail)
+      publicKey: { kty: 'RSA', e: 'AQAB', n: `vWJiVP3tUiJ_-lImHdJo6kHqKFHQFulcPu7jbiiJ56-Hy8MXW_iCxYbQ3iqIsQlR\
+        TxSn5NLuqoejWM2OntJSPOEp79GRh5Fjri6l6BbVlViWoVAy-NW54VRJput4QXHKFpu2h_SVMwNvVdC0UyMIPqqFz3rZsst2tQ7fVjXyO\
+        cNTrVOBEqaWW8T-jYbd2j_BcuOz3Rc7AsgSPbDK1B6-W41Ibp1SWZtWuUEY1IVSGtT5iz1vLDLUxxT3QyCyXfuVmL5qrQ-nV_XR3zdoKE\
+        n6eKOD1Bx9rAJVYVHqrApRsrjIiL4vPCyIZE\YQ1cbg4Ux1DsRqTVWUTPVVE5D-Q2_1FQ`, alg: 'RSA-OAEP-256',
+        ext: true, key_ops: ['']},
+      privateKey: { alg: 'PS256', d: `YrvV7PBkjiNEljI0dpJJAFjT-YhJ_dZ-uzWB2VNU01vLaCL4-i_EpAY2Ns-P_iIemw30RnrXZ\
+        4xCoimEXjI6SRApIl7DChrw9ct0GLGzNtz-Uf2Q49sAtcUNfkQCcAV-kB-Fr_q5cR_2pAoc3dY4hjyM8_5taZ1dlm8ov3OwdQjmzd\
+        fhmzwtHmpw805xFdMAZmUtIRelkyaj6Uc9ja4PMO5-Kmvf9a5hPdwJF3nGVuy5IiaN_cv5_T4jd3p5SRDXvSf4h_Wr0BqltIDpE3bv\
+        b1pJP35oXfhmaoOND4s9WflNxjP2A53o_TJtpblUkd84bnaEovSymJrj0hzW1FKr1Q`, dp: `m_zy8LjAiVxB8px29qBtkIKtGUfVih\
+        a6Zgq58Ley6U2QXXmPaSbex7iBtHyrAP4UNQTaORoTAta_G1Q33InQp0W0c0n4AqVxVTzEuotZgSPf8atQZHsPpadUDjlVvg3SWCn2D\
+        55c6iygxrqN5j1tpc_BCJYxtfnR43jSJzfzvbU`, dq: `rZ5DbleUPf6ApVYs3rWq21HmOkUS3kKijcud-mVImcPYqXo2eBV__\
+        Y4qwWrTB8xSwcQEo6HSNyM59bUx-OJDEPXD53SDqubqQN6NL09jZ1lkDTTNQSo8xWZLt26S5d8g_3HdasL0znsUcu9bcMxld-NIh\
+        Y4yJOmvprH41ytNr1k`, e: 'AQAB', ext: true, kty: 'RSA', n: `3Eac1B6i-qSr4o0SQoI89xQ3drpGBipigAw-phrIH2nRF\
+        oJWto3kWKdgojbdx2YRtbqmo2_2MMp633TCquANNJNZwxvyiNj0Q2dIJ69nvapIipkrWLGBwZd10CSbqb2o5I28Jr_VKDELZzyxahKB\
+        Kkw0EQ7d1Y6oZK3jC9WGBqsf1Bzd5SOnvZO6fsvCoY8f260-YoSWoQ5sR_EGKpb4u2EuhYTGfYBtBo9u5zJvRdr37__ctKCd8pbEGp0\
+        mw5IzbbEg2BpExHCCMNOihwr-PUQi4VvWQEsiz30RvPyO1p1YgDNVZxueJgxI09UjapS6WOALjicwAxs6hZ3XvLZ-fw`, p: `_aJsmCc\
+        H8-L0-r5f4AksMvcbBMT85mfPgWkqo8z1K70klzoE-KjYcnkrKGW4keLXiSi7rxW8OTmEnjJZTj9RhVtEnUA71Y5vxsZAtC1mc427d\
+        yKT1Ysvhpr1u7fsiQ-Jv9PIbCePWtKBKIFLF2gzVwkzxCOvIok3DK6SkL_U2Ks`, q: `3lSKpIF38wxUGGeTVnW36flsxw_h7Hq\
+        oImfX7s8VfpYtOd6GfUDwMtAH69v3fUz0shIFD3gNAqiJtC7mB3wAxsUCTA4FihotUYJQ9s8VIf0TZC1kTY0AEXZ8isqEx37wWyxp\
+        1B99yo50s0GMz7A8r__Xi_vWMpS0623lGBngGX0`, qi: 'thTQiQFnYH9fbGXLNDY6_hoCCpUlAjACw3atW4PH7IApF9wEVQp5lH4C6\
+        OVb1QUeu-kHD1ae4UoMeGmtMGzAfUn2ZOEB3V88MSejeYJz6dLLgdZXHmJzZOtqWsYE4F9KVBb7xdOvYjMiCNRqCz3tCqY1sgTa3pXI\
+        xbb_GZQt6Ts'},
+    }).then(fail)
       .catch((err) => {
         expect(err.constructor.name)
           .toEqual(importKeyError)
         expect(err.message)
-          .toEqual(importKeyErrorMessage)
-        done()
-      })
-  })
-  it('importkey(key) should throw a TypeError if key is a object that contains an empty object for PK', (done) => {
-    asymCrypto.importKey({
-      publicKey: {},
-      privateKey: null,
-    })
-      .then(fail)
-      .catch((err) => {
-        expect(err.constructor.name)
-          .toEqual(importKeyError)
-        expect(err.message)
-          .toEqual(importKeyErrorMessage)
+          .toEqual(UndefinedKeyOpsError)
         done()
       })
   })
 
-  it('importkey(key) should throw a TypeError if key is a object that contains an empty object for PrK', (done) => {
+  it('importkey(keypair) should throw a TypeError if the privateKey is a JsonWebKey that do not\
+   have wrong content for key_ops', (done) => {
     asymCrypto.importKey({
-      publicKey: null,
-      privateKey: {},
-    })
-      .then(fail)
+      publicKey: { kty: 'RSA', e: 'AQAB', n: `vWJiVP3tUiJ_-lImHdJo6kHqKFHQFulcPu7jbiiJ56-Hy8MXW_iCxYbQ3iqIsQlR\
+        TxSn5NLuqoejWM2OntJSPOEp79GRh5Fjri6l6BbVlViWoVAy-NW54VRJput4QXHKFpu2h_SVMwNvVdC0UyMIPqqFz3rZsst2tQ7fVjXyO\
+        cNTrVOBEqaWW8T-jYbd2j_BcuOz3Rc7AsgSPbDK1B6-W41Ibp1SWZtWuUEY1IVSGtT5iz1vLDLUxxT3QyCyXfuVmL5qrQ-nV_XR3zdoKE\
+        n6eKOD1Bx9rAJVYVHqrApRsrjIiL4vPCyIZE\YQ1cbg4Ux1DsRqTVWUTPVVE5D-Q2_1FQ`, alg: 'RSA-OAEP-256', ext: true,
+        key_ops: ['encrypt']},
+      privateKey: { alg: 'PS256', d: `YrvV7PBkjiNEljI0dpJJAFjT-YhJ_dZ-uzWB2VNU01vLaCL4-i_EpAY2Ns-P_iIemw30RnrXZ\
+        4xCoimEXjI6SRApIl7DChrw9ct0GLGzNtz-Uf2Q49sAtcUNfkQCcAV-kB-Fr_q5cR_2pAoc3dY4hjyM8_5taZ1dlm8ov3OwdQjmzd\
+        fhmzwtHmpw805xFdMAZmUtIRelkyaj6Uc9ja4PMO5-Kmvf9a5hPdwJF3nGVuy5IiaN_cv5_T4jd3p5SRDXvSf4h_Wr0BqltIDpE3bv\
+        b1pJP35oXfhmaoOND4s9WflNxjP2A53o_TJtpblUkd84bnaEovSymJrj0hzW1FKr1Q`, dp: `m_zy8LjAiVxB8px29qBtkIKtGUfVih\
+        a6Zgq58Ley6U2QXXmPaSbex7iBtHyrAP4UNQTaORoTAta_G1Q33InQp0W0c0n4AqVxVTzEuotZgSPf8atQZHsPpadUDjlVvg3SWCn2D\
+        55c6iygxrqN5j1tpc_BCJYxtfnR43jSJzfzvbU`, dq: `rZ5DbleUPf6ApVYs3rWq21HmOkUS3kKijcud-mVImcPYqXo2eBV__\
+        Y4qwWrTB8xSwcQEo6HSNyM59bUx-OJDEPXD53SDqubqQN6NL09jZ1lkDTTNQSo8xWZLt26S5d8g_3HdasL0znsUcu9bcMxld-NIh\
+        Y4yJOmvprH41ytNr1k`, e: 'AQAB', ext: true, kty: 'RSA', n: `3Eac1B6i-qSr4o0SQoI89xQ3drpGBipigAw-phrIH2nRF\
+        oJWto3kWKdgojbdx2YRtbqmo2_2MMp633TCquANNJNZwxvyiNj0Q2dIJ69nvapIipkrWLGBwZd10CSbqb2o5I28Jr_VKDELZzyxahKB\
+        Kkw0EQ7d1Y6oZK3jC9WGBqsf1Bzd5SOnvZO6fsvCoY8f260-YoSWoQ5sR_EGKpb4u2EuhYTGfYBtBo9u5zJvRdr37__ctKCd8pbEGp0\
+        mw5IzbbEg2BpExHCCMNOihwr-PUQi4VvWQEsiz30RvPyO1p1YgDNVZxueJgxI09UjapS6WOALjicwAxs6hZ3XvLZ-fw`, p: `_aJsmCc\
+        H8-L0-r5f4AksMvcbBMT85mfPgWkqo8z1K70klzoE-KjYcnkrKGW4keLXiSi7rxW8OTmEnjJZTj9RhVtEnUA71Y5vxsZAtC1mc427d\
+        yKT1Ysvhpr1u7fsiQ-Jv9PIbCePWtKBKIFLF2gzVwkzxCOvIok3DK6SkL_U2Ks`, q: `3lSKpIF38wxUGGeTVnW36flsxw_h7Hq\
+        oImfX7s8VfpYtOd6GfUDwMtAH69v3fUz0shIFD3gNAqiJtC7mB3wAxsUCTA4FihotUYJQ9s8VIf0TZC1kTY0AEXZ8isqEx37wWyxp\
+        1B99yo50s0GMz7A8r__Xi_vWMpS0623lGBngGX0`, qi: 'thTQiQFnYH9fbGXLNDY6_hoCCpUlAjACw3atW4PH7IApF9wEVQp5lH4C6\
+        OVb1QUeu-kHD1ae4UoMeGmtMGzAfUn2ZOEB3V88MSejeYJz6dLLgdZXHmJzZOtqWsYE4F9KVBb7xdOvYjMiCNRqCz3tCqY1sgTa3pXI\
+        xbb_GZQt6Ts', key_ops: ['']},
+    }).then(fail)
       .catch((err) => {
         expect(err.constructor.name)
           .toEqual(importKeyError)
         expect(err.message)
-          .toEqual(importKeyErrorMessage)
+          .toEqual(UndefinedKeyOpsError)
         done()
       })
   })
@@ -298,24 +231,24 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
   it('sign, verify', (done) => {
     const data = helper.randStr()
     asymCrypto.sign(data, cryptoSigningKeypair.privateKey)
-      .then((signature) => asymCrypto.verifySignature(data, signature, cryptoSigningKeypair.publicKey))
-      .then((isValid) => {
-        expect(isValid)
-          .toBeTruthy()
-        done()
-      })
+      .then((signature) => asymCrypto.verifySignature(data, signature, cryptoSigningKeypair.publicKey)
+        .then((isValid) => {
+          expect(isValid)
+            .toBeTruthy()
+          done()
+        }).catch(fail))
       .catch(fail)
   })
 
   it('encrypt() decrypt()', (done) => {
     const data = helper.randStr()
     asymCrypto.encrypt(data, cryptoEncryptionKeypair.publicKey)
-      .then((encryptedData) => asymCrypto.decrypt(encryptedData, cryptoEncryptionKeypair.privateKey))
-      .then((plaintext) => {
-        expect(plaintext)
-          .toEqual(data)
-        done()
-      })
+      .then((encryptedData) => asymCrypto.decrypt(encryptedData, cryptoEncryptionKeypair.privateKey)
+        .then((plaintext) => {
+          expect(plaintext)
+            .toEqual(data)
+          done()
+        }).catch(fail))
       .catch(fail)
   })
 })
