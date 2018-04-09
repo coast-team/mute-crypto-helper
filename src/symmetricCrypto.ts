@@ -40,7 +40,7 @@ export function importKey (cryptoKeyData: JsonWebKey) {
 }
 
 // data is an ArrayBuffer
-export async function encrypt (plaintext: BufferSource, encryptionKey: CryptoKey) {
+export async function encrypt (plaintext: Uint8Array, encryptionKey: CryptoKey) {
   const nonce = helper.generateNonce()
 
   const ciphertext = await window.crypto.subtle.encrypt({
