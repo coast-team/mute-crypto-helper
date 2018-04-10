@@ -18,55 +18,62 @@
 import * as helper from './symmetricCryptoHelper'
 
 export function generateEncryptionKey () {
-  return window.crypto.subtle.generateKey({
-    name: helper.encryptionAlgorithm,
-    length: helper.keySize,
-  }, true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['encrypt', 'decrypt']) as Promise<CryptoKey>
+  return window.crypto.subtle.generateKey(
+    {
+      name: helper.encryptionAlgorithm,
+      length: helper.keySize,
+    },
+    true, // whether the key is extractable (i.e. can be used in exportKey)
+    ['encrypt', 'decrypt'],
+  ) as Promise<CryptoKey>
 }
 
 export function exportKey (cryptoKey: CryptoKey) {
-  return window.crypto.subtle.exportKey(helper.keyDataFormat,
-    cryptoKey) as Promise<JsonWebKey>
+  return window.crypto.subtle.exportKey(helper.keyDataFormat, cryptoKey) as Promise<JsonWebKey>
 }
 
 export function importKey (cryptoKeyData: JsonWebKey) {
-  return window.crypto.subtle.importKey(helper.keyDataFormat,
-    cryptoKeyData, {
+  return window.crypto.subtle.importKey(
+    helper.keyDataFormat,
+    cryptoKeyData,
+    {
       name: helper.encryptionAlgorithm,
     },
-    false, ['encrypt', 'decrypt']) as Promise<CryptoKey>
-
+    false,
+    ['encrypt', 'decrypt'],
+  ) as Promise<CryptoKey>
 }
 
 // data is an ArrayBuffer
 export async function encrypt (plaintext: Uint8Array, encryptionKey: CryptoKey) {
   const nonce = helper.generateNonce()
 
-  const ciphertext = await window.crypto.subtle.encrypt({
-    name: helper.encryptionAlgorithm,
-    counter: nonce,
-    length: 128, // can be 1-128
-  },
+  const ciphertext = await window.crypto.subtle.encrypt(
+    {
+      name: helper.encryptionAlgorithm,
+      counter: nonce,
+      length: 128, // can be 1-128
+    },
     encryptionKey,
-    plaintext)
+    plaintext,
+  )
 
   return helper.joinNonceCiphertext(nonce, new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
 // signature is an ArrayBuffer
 export async function decrypt (data: Uint8Array, encryptionPrivateKey: CryptoKey) {
-  const [
-    nonce,
-    ciphertext,
-  ] = await helper.splitNonceCiphertext(data)
-  return window.crypto.subtle.decrypt({
-    name: helper.encryptionAlgorithm,
-    counter: nonce,
-    length: 128,
-  },
-    encryptionPrivateKey,
-    ciphertext)
+  const [nonce, ciphertext] = await helper.splitNonceCiphertext(data)
+  return window.crypto.subtle
+    .decrypt(
+    {
+      name: helper.encryptionAlgorithm,
+      counter: nonce,
+      length: 128,
+    },
+      encryptionPrivateKey,
+      ciphertext,
+    )
     .then((buffer) => new Uint8Array(buffer))
 }
 

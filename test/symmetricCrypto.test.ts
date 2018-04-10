@@ -23,24 +23,22 @@ describe('Symmetric Crypto API wrapper test\n', () => {
   let encryptionKey: CryptoKey
 
   beforeAll((done) => {
-    symCrypto.generateEncryptionKey()
-      .then((key) => {
-        encryptionKey = key
-        done()
-      })
+    symCrypto.generateEncryptionKey().then((key) => {
+      encryptionKey = key
+      done()
+    })
   })
 
   it('isSecretCryptoKey', () => {
-    expect(symCrypto.isSecretCryptoKey(encryptionKey))
-      .toBeTruthy()
+    expect(symCrypto.isSecretCryptoKey(encryptionKey)).toBeTruthy()
   })
 
   it('exportKey(key), importkey(keyData) should succeed (key is a secret crypto key)', (done) => {
-    symCrypto.exportKey(encryptionKey)
+    symCrypto
+      .exportKey(encryptionKey)
       .then((keyDataObj) => symCrypto.importKey(keyDataObj))
       .then((secretCryptoKey) => {
-        expect(symCrypto.isSecretCryptoKey(secretCryptoKey))
-          .toBeTruthy()
+        expect(symCrypto.isSecretCryptoKey(secretCryptoKey)).toBeTruthy()
         done()
       })
       .catch(fail)
@@ -50,23 +48,27 @@ describe('Symmetric Crypto API wrapper test\n', () => {
     const s = helper.randStr()
     const nonce = symCryptoHelper.generateNonce()
 
-    symCryptoHelper.joinNonceCiphertext(nonce, s).then((ciphertext) => {
-      symCryptoHelper.splitNonceCiphertext(ciphertext).then(([nonce2, s2]) => {
-        expect(nonce2)
-          .toEqual(nonce)
-        expect(s2)
-          .toEqual(s)
-      }).catch(fail)
-    }).catch(fail)
+    symCryptoHelper
+      .joinNonceCiphertext(nonce, s)
+      .then((ciphertext) => {
+        symCryptoHelper
+          .splitNonceCiphertext(ciphertext)
+          .then(([nonce2, s2]) => {
+            expect(nonce2).toEqual(nonce)
+            expect(s2).toEqual(s)
+          })
+          .catch(fail)
+      })
+      .catch(fail)
   })
 
   it('encrypt() decrypt(), random string test', (done) => {
     const s = helper.randStr()
-    symCrypto.encrypt(s, encryptionKey)
+    symCrypto
+      .encrypt(s, encryptionKey)
       .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
       .then((plaintext) => {
-        expect(plaintext)
-          .toEqual(s)
+        expect(plaintext).toEqual(s)
         done()
       })
       .catch(fail)
@@ -74,11 +76,11 @@ describe('Symmetric Crypto API wrapper test\n', () => {
 
   it('encrypt() decrypt(), real world test', (done) => {
     const s = 'Hello, world'
-    symCrypto.encrypt(helper.str2buffer(s), encryptionKey)
+    symCrypto
+      .encrypt(helper.str2buffer(s), encryptionKey)
       .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
       .then((plaintext) => {
-        expect(helper.buffer2str(plaintext))
-          .toEqual(s)
+        expect(helper.buffer2str(plaintext)).toEqual(s)
         done()
       })
       .catch(fail)
