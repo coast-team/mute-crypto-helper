@@ -76,7 +76,3 @@ export async function decrypt (data: Uint8Array, encryptionPrivateKey: CryptoKey
     )
     .then((buffer) => new Uint8Array(buffer))
 }
-
-export function isSecretCryptoKey (crytoKey: CryptoKey) {
-  return crytoKey.type === 'secret'
-}

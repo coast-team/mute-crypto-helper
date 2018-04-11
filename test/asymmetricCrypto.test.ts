@@ -38,27 +38,12 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
       })
   })
 
-  it('isPublicKey', () => {
-    expect(asymCrypto.isPublicKey(cryptoSigningKeypair.publicKey)).toBeTruthy()
-    expect(asymCrypto.isPublicKey(cryptoSigningKeypair.privateKey)).toBeFalsy()
-    expect(asymCrypto.isPublicKey(cryptoEncryptionKeypair.publicKey)).toBeTruthy()
-    expect(asymCrypto.isPublicKey(cryptoEncryptionKeypair.privateKey)).toBeFalsy()
-  })
-
-  it('isPrivateKey', () => {
-    expect(asymCrypto.isPrivateKey(cryptoSigningKeypair.privateKey)).toBeTruthy()
-    expect(asymCrypto.isPrivateKey(cryptoSigningKeypair.publicKey)).toBeFalsy()
-    expect(asymCrypto.isPrivateKey(cryptoEncryptionKeypair.privateKey)).toBeTruthy()
-    expect(asymCrypto.isPrivateKey(cryptoEncryptionKeypair.publicKey)).toBeFalsy()
-  })
-
   it('exportKey(key), importkey should succeed (key is a signing KeyPair)', (done) => {
     asymCrypto
       .exportKey(cryptoSigningKeypair)
       .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
       .then((keyPair) => {
-        expect(asymCrypto.isPublicKey(keyPair.publicKey)).toBeTruthy()
-        expect(asymCrypto.isPrivateKey(keyPair.privateKey)).toBeTruthy()
+        expect(cryptoSigningKeypair).toEqual(keyPair)
         done()
       })
       .catch(fail)
@@ -69,8 +54,7 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
       .exportKey(cryptoEncryptionKeypair)
       .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
       .then((keyPair) => {
-        expect(asymCrypto.isPublicKey(keyPair.publicKey)).toBeTruthy()
-        expect(asymCrypto.isPrivateKey(keyPair.privateKey)).toBeTruthy()
+        expect(cryptoEncryptionKeypair).toEqual(keyPair)
         done()
       })
       .catch(fail)

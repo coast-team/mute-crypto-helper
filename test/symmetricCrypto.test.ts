@@ -29,16 +29,12 @@ describe('Symmetric Crypto API wrapper test\n', () => {
     })
   })
 
-  it('isSecretCryptoKey', () => {
-    expect(symCrypto.isSecretCryptoKey(encryptionKey)).toBeTruthy()
-  })
-
   it('exportKey(key), importkey(keyData) should succeed (key is a secret crypto key)', (done) => {
     symCrypto
       .exportKey(encryptionKey)
       .then((keyDataObj) => symCrypto.importKey(keyDataObj))
       .then((secretCryptoKey) => {
-        expect(symCrypto.isSecretCryptoKey(secretCryptoKey)).toBeTruthy()
+        expect(secretCryptoKey).toEqual(encryptionKey)
         done()
       })
       .catch(fail)

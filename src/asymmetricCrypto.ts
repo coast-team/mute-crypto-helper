@@ -180,11 +180,3 @@ export function decrypt (ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey
     )
     .then((plaintext) => new Uint8Array(plaintext)) as Promise<Uint8Array>
 }
-
-export function isPublicKey (cryptoKey: CryptoKey) {
-  return cryptoKey.type === 'public'
-}
-
-export function isPrivateKey (cryptoKey: CryptoKey) {
-  return cryptoKey.type === 'private'
-}
