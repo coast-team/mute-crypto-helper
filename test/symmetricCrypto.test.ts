@@ -42,7 +42,7 @@ describe('Symmetric Crypto API wrapper test\n', () => {
 
   it('joinNonceCiphertext() splitNonceCiphertext()', () => {
     const s = helper.randStr()
-    const nonce = symCryptoHelper.generateNonce()
+    const nonce = symCryptoHelper.getDefaultEncryptParams(true).counter
 
     symCryptoHelper
       .joinNonceCiphertext(nonce, s)

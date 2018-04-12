@@ -15,10 +15,89 @@
 // specific language governing permissions and limitations
 // under the License.
 
-export const signingAlgorithm = 'RSA-PSS'
-export const encryptionAlgorithm = 'RSA-OAEP'
-export const keySize = 4096
-export const hashAlgorithm = 'SHA-256'
-export const saltLength = 128
-export const publicExponent = new Uint8Array([0x01, 0x00, 0x01]) // 0x010001 -> 65537
-export const keyDataFormat = 'jwk' // JSON Web key is a format for representing a public/private key as a JSON object
+const encryptionAlgo = 'RSA-OAEP'
+const encryptionKeySize = 2048
+const encryptionHashAlgo = 'SHA-256'
+
+const signingAlgo = 'RSA-PSS'
+const signingKeySize = 2048
+const signingHashAlgo = 'SHA-256'
+const signingSaltLength = 128
+
+const publicExponent = new Uint8Array([0x01, 0x00, 0x01])
+
+export const defaultAsymmetricEncryptionParam = {
+  /**
+   * Default encryption Algorithm to use.
+   */
+  name: encryptionAlgo,
+  /**
+   * Default key size to use.
+   * 2048 or 4096 for RSA.
+   */
+  modulusLength: encryptionKeySize,
+  /**
+   * Default hash algorithm to use with encryption scheme.
+   * SHA-256, SHA-384 or SHA-512 for RSA-OAEP.
+   */
+  hash: { name: encryptionHashAlgo },
+  /**
+   * Default public exponent.
+   * 0x010001 -> 65537
+   */
+  publicExponent,
+}
+
+export const defaultAsymmetricSigningParam = {
+  /**
+   * Default encryption Algorithm to use.
+   */
+  name: signingAlgo,
+  /**
+   * Default key size to use.
+   * 2048 or 4096 for RSA.
+   */
+  modulusLength: signingKeySize,
+  /**
+   * Default hash algorithm to use with signature.
+   * SHA-256, SHA-384 or SHA-512 for RSA-PSS.
+   */
+  hash: { name: signingHashAlgo },
+  /**
+   * Default public exponent.
+   * 0x010001 -> 65537
+   */
+  publicExponent,
+}
+
+export const defaultEncryptParams = {
+  name: encryptionAlgo,
+  // label: Uint8Array([...]) //optional
+}
+
+export const defaultSigningParams = {
+  name: signingAlgo,
+  /**
+   * Default salt length.
+   * SHA-256, SHA-384 or SHA-512.
+   */
+  saltLength: signingSaltLength,
+}
+
+export const defaultImportEncryptionParam = {
+  name: encryptionAlgo,
+  /**
+   * Default hash algorithm to use with encryption scheme.
+   * SHA-256, SHA-384 or SHA-512 for RSA-OAEP.
+   */
+  hash: { name: encryptionHashAlgo },
+}
+
+export const defaultImportSigningParam = {
+  name: signingAlgo,
+  /**
+   * Default hash algorithm to use with signature scheme.
+   * SHA-256, SHA-384 or SHA-512 for RSA-OAEP.
+   */
+  hash: { name: signingHashAlgo },
+}

@@ -15,49 +15,64 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import * as helper from './asymmetricCryptoHelper'
+import {
+  defaultAsymmetricEncryptionParam,
+  defaultAsymmetricSigningParam,
+  defaultEncryptParams,
+  defaultImportEncryptionParam,
+  defaultImportSigningParam,
+  defaultSigningParams,
+} from './asymmetricCryptoHelper'
+import { defaultCryptoKeyDataFormat } from './cryptoHelper'
 
+/**
+ * An ICryptoKeyPairData consists of 2 JSON Web Keys, the public and private ones.
+ */
 export interface ICryptoKeyPairData {
   readonly publicKey: JsonWebKey
   readonly privateKey: JsonWebKey
 }
 
+/**
+ * generateSigningKey generates a cryptoKeyPair with sane defaults to be used for signing purpose.
+ *
+ * @see {@link defaultAsymmetricSigningParam}
+ */
 export function generateSigningKey (): Promise<CryptoKeyPair> {
   return window.crypto.subtle.generateKey(
-    {
-      name: helper.signingAlgorithm,
-      modulusLength: helper.keySize,
-      publicExponent: helper.publicExponent,
-      hash: {
-        name: helper.hashAlgorithm, // slightly better perf on 64bits proc ?
-      },
-    },
+    defaultAsymmetricSigningParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
     ['sign', 'verify'],
   ) as Promise<CryptoKeyPair>
 }
 
+/**
+ * generateSigningKey generates a cryptoKeyPair with sane defaults to be used for asymmetric encryption purpose.
+ *
+ * @see {@link defaultAsymmetricEncryptionParam}
+ */
 export function generateEncryptionKey (): Promise<CryptoKeyPair> {
   return window.crypto.subtle.generateKey(
-    {
-      name: helper.encryptionAlgorithm,
-      modulusLength: helper.keySize, // can be 1024, 2048, or 4096
-      publicExponent: helper.publicExponent,
-      hash: {
-        name: helper.hashAlgorithm, // slightly better perf on 64bits proc ?
-      },
-    },
+    defaultAsymmetricEncryptionParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
     ['encrypt', 'decrypt'],
   ) as Promise<CryptoKeyPair>
 }
 
+/**
+ * exportKey exports a CryptoKeyPair to an {@link ICryptoKeyPairData}.
+ * The CryptoKeyPair should be the same as returned by {@link generateSigningKey} or {@link generateEncryptionKey}.
+ */
 export async function exportKey (cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKeyPairData> {
-  const publicKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, cryptoKeyPair.publicKey)
-  const privateKey = await window.crypto.subtle.exportKey(helper.keyDataFormat, cryptoKeyPair.privateKey)
+  const publicKey = await window.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.publicKey)
+  const privateKey = await window.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.privateKey)
   return { publicKey, privateKey } as ICryptoKeyPairData
 }
 
+/**
+ * importKey imports an ICryptoKeyPairData to a CryptoKeyPair.
+ * The ICryptoKeyPairData should be the same as returned by {@link exportKey}.
+ */
 export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
   const UndefinedKeyOpsError = Promise.reject(
     new TypeError(`key_ops should not be undefined.\
@@ -68,23 +83,17 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
   if (cryptoKeyPairData.publicKey.key_ops) {
     if (cryptoKeyPairData.publicKey.key_ops.includes('verify')) {
       publicKey = await window.crypto.subtle.importKey(
-        helper.keyDataFormat,
+        defaultCryptoKeyDataFormat,
         cryptoKeyPairData.publicKey,
-        {
-          name: helper.signingAlgorithm,
-          hash: { name: helper.hashAlgorithm },
-        },
+        defaultImportSigningParam,
         false,
         ['verify'],
       )
     } else if (cryptoKeyPairData.publicKey.key_ops.includes('encrypt')) {
       publicKey = await window.crypto.subtle.importKey(
-        helper.keyDataFormat,
+        defaultCryptoKeyDataFormat,
         cryptoKeyPairData.publicKey,
-        {
-          name: helper.encryptionAlgorithm,
-          hash: { name: helper.hashAlgorithm },
-        },
+        defaultImportEncryptionParam,
         false,
         ['encrypt'],
       )
@@ -98,23 +107,17 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
   if (cryptoKeyPairData.privateKey.key_ops) {
     if (cryptoKeyPairData.privateKey.key_ops.includes('sign')) {
       privateKey = await window.crypto.subtle.importKey(
-        helper.keyDataFormat,
+        defaultCryptoKeyDataFormat,
         cryptoKeyPairData.privateKey,
-        {
-          name: helper.signingAlgorithm,
-          hash: { name: helper.hashAlgorithm },
-        },
+        defaultImportSigningParam,
         false,
         ['sign'],
       )
     } else if (cryptoKeyPairData.privateKey.key_ops.includes('decrypt')) {
       privateKey = await window.crypto.subtle.importKey(
-        helper.keyDataFormat,
+        defaultCryptoKeyDataFormat,
         cryptoKeyPairData.privateKey,
-        {
-          name: helper.encryptionAlgorithm,
-          hash: { name: helper.hashAlgorithm },
-        },
+        defaultImportEncryptionParam,
         false,
         ['decrypt'],
       )
@@ -127,56 +130,44 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
   return { publicKey, privateKey } as CryptoKeyPair
 }
 
+/**
+ * sign returns the signature of the given plaintext
+ *
+ * @param signingPrivateKey The private key used to sign.
+ */
 export function sign (plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
   return window.crypto.subtle
-    .sign(
-    {
-      name: helper.signingAlgorithm,
-      saltLength: helper.saltLength,
-    },
-      signingPrivateKey,
-      plaintext,
-    )
+    .sign(defaultSigningParams, signingPrivateKey, plaintext)
     .then((signature) => new Uint8Array(signature)) as Promise<Uint8Array>
 }
 
-// signature is an ArrayBuffer
+/**
+ * verifySignature verifies that the given signature and plaintext match.
+ *
+ * @param signingPublicKey THe public Key associated with the private key used to sign initially.
+ */
 export function verifySignature (plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey) {
-  return window.crypto.subtle.verify(
-    {
-      name: helper.signingAlgorithm,
-      saltLength: helper.saltLength,
-    },
-    signingPublicKey,
-    signature,
-    plaintext,
-  ) as Promise<boolean>
+  return window.crypto.subtle.verify(defaultSigningParams, signingPublicKey, signature, plaintext) as Promise<boolean>
 }
 
-// data is an ArrayBuffer
+/**
+ * encrypt returns the ciphertext of the given plaintext.
+ *
+ * @param encryptionPublicKey The public key used to encrypt.
+ */
 export function encrypt (plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
   return window.crypto.subtle
-    .encrypt(
-    {
-      name: helper.encryptionAlgorithm,
-        // label: Uint8Array([...]) //optional
-    },
-      encryptionPublicKey,
-      plaintext,
-    )
+    .encrypt(defaultEncryptParams, encryptionPublicKey, plaintext)
     .then((ciphertext) => new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
-// signature is an ArrayBuffer
+/**
+ * decrypt decrypts the given ciphertext.
+ *
+ * @param encryptionPrivateKey The private key associated to the public key used to encrypt.
+ */
 export function decrypt (ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey) {
   return window.crypto.subtle
-    .decrypt(
-    {
-      name: helper.encryptionAlgorithm,
-        // label: Uint8Array([...]) //optional
-    },
-      encryptionPrivateKey,
-      ciphertext,
-    )
+    .decrypt(defaultEncryptParams, encryptionPrivateKey, ciphertext)
     .then((plaintext) => new Uint8Array(plaintext)) as Promise<Uint8Array>
 }

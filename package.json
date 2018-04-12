@@ -17,9 +17,11 @@
     "prettier": "^1.11.1",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",
+    "typedoc": "^0.11.1",
     "typescript": "^2.7.2"
   },
   "scripts": {
+    "doc" : "typedoc --theme minimal --out docs/ src/",
     "test": "karma start"
   },
   "repository": {
@@ -30,7 +32,7 @@
     "crypto",
     "wrapper"
   ],
-  "author": "Jean-Philippe",
+  "author": "Jean-Philippe Eisenbarth",
   "license": "Apache 2",
   "bugs": {
     "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
