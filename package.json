@@ -1,8 +1,10 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "1.0.0",
+  "version": "0.1.0-beta-1",
   "description": "## Web Crypto wrapper",
   "main": "dist/crypto-api-wrapper.cjs.js",
+  "module": "dist/crypto-api-wrapper.es.js",
+  "types": "dist/types/src/index.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
@@ -15,13 +17,16 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
     "prettier": "^1.11.1",
+    "rollup": "^0.58.0",
+    "rollup-plugin-typescript2": "^0.13.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",
     "typedoc": "^0.11.1",
     "typescript": "^2.7.2"
   },
   "scripts": {
-    "doc" : "typedoc --theme minimal --out docs/ src/",
+    "doc": "typedoc --theme minimal --out docs/ src/",
+    "build": "rm -rf dist && rollup -c rollup.config.js",
     "test": "karma start"
   },
   "repository": {
@@ -29,7 +34,7 @@
     "url": "git+https://github.com/coast-team/crypto-api-wrapper.git"
   },
   "keywords": [
-    "crypto",
+    "webcrypto",
     "wrapper"
   ],
   "author": "Jean-Philippe Eisenbarth",
