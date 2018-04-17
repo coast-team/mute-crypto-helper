@@ -3,6 +3,7 @@ npm-debug*
 
 # Rollup output folders
 .rolledup*
+.rpt2_cache
 
 # Test coverage
 coverage
