@@ -1,10 +1,19 @@
 # Crypto API wrapper
 
-## Web Crypto wrapper
+This lib is a wrapper around the [Web Crypto API][1], it offers an API
+with sane defaults.
 
-Currently this lib is a wrapper around the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and it offers an API with sane defaults
+## Installation
 
-API :
+```sh
+npm i crypto-api-wrapper
+```
+
+## Usage
+
+This lib exports 2 objects : asymmetricCrypto and symmetricCrypto
+
+### asymmetricCrypto API
 
 * generateSigningKey()
 * generateEncryptionKey()
@@ -14,7 +23,13 @@ API :
 * verify(plaintext, signature, publicKey)
 * encrypt(plaintext, publicKey)
 * decrypt(ciphertext, privateKey)
-* isCryptoKeyPair(keyPair)
-* isCryptoKey(key)
-* isPrivateKey(key)
-* isPublicKey(key)
+
+### symmetricCrypto API
+
+* generateEncryptionKey()
+* exportKey(keypair)
+* importKey(keydata)
+* encrypt(plaintext, encryptionKey)
+* decrypt(ciphertext, encryptionKey)
+
+[1]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
