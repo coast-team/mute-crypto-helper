@@ -49,7 +49,10 @@
     "webcrypto",
     "wrapper"
   ],
-  "author": "Jean-Philippe Eisenbarth",
+  "contributors": [
+    "Jean-Philippe Eisenbarth",
+    "Philippe Kalitine <philippe.kalitine@gmail.com> (http://philippe.kalitine.name/)"
+  ],
   "license": "Apache 2",
   "bugs": {
     "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
