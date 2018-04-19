@@ -5,6 +5,7 @@
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
   "browser": "dist/esm/src/index.browser.js",
+  "files": ["dist/"],
   "dependencies": {
     "core-js": "^2.5.5"
   },
