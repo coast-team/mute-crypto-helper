@@ -38,11 +38,11 @@ export interface ICryptoKeyPairData {
  *
  * @see {@link defaultAsymmetricSigningParam}
  */
-export function generateSigningKey (): Promise<CryptoKeyPair> {
+export function generateSigningKey(): Promise<CryptoKeyPair> {
   return global.crypto.subtle.generateKey(
     defaultAsymmetricSigningParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['sign', 'verify'],
+    ['sign', 'verify']
   ) as Promise<CryptoKeyPair>
 }
 
@@ -51,11 +51,11 @@ export function generateSigningKey (): Promise<CryptoKeyPair> {
  *
  * @see {@link defaultAsymmetricEncryptionParam}
  */
-export function generateEncryptionKey (): Promise<CryptoKeyPair> {
+export function generateEncryptionKey(): Promise<CryptoKeyPair> {
   return global.crypto.subtle.generateKey(
     defaultAsymmetricEncryptionParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   ) as Promise<CryptoKeyPair>
 }
 
@@ -63,7 +63,7 @@ export function generateEncryptionKey (): Promise<CryptoKeyPair> {
  * exportKey exports a CryptoKeyPair to an {@link ICryptoKeyPairData}.
  * The CryptoKeyPair should be the same as returned by {@link generateSigningKey} or {@link generateEncryptionKey}.
  */
-export async function exportKey (cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKeyPairData> {
+export async function exportKey(cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKeyPairData> {
   const publicKey = await global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.publicKey)
   const privateKey = await global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.privateKey)
   return { publicKey, privateKey } as ICryptoKeyPairData
@@ -73,10 +73,10 @@ export async function exportKey (cryptoKeyPair: CryptoKeyPair): Promise<ICryptoK
  * importKey imports an ICryptoKeyPairData to a CryptoKeyPair.
  * The ICryptoKeyPairData should be the same as returned by {@link exportKey}.
  */
-export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
+export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
   const UndefinedKeyOpsError = Promise.reject(
     new TypeError(`key_ops should not be undefined.\
-    cryptoKeyPairData should be the same object as returned by exportKey ...`),
+    cryptoKeyPairData should be the same object as returned by exportKey ...`)
   )
   let publicKey: CryptoKey
   let privateKey: CryptoKey
@@ -87,7 +87,7 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
         cryptoKeyPairData.publicKey,
         defaultImportSigningParam,
         false,
-        ['verify'],
+        ['verify']
       )
     } else if (cryptoKeyPairData.publicKey.key_ops.includes('encrypt')) {
       publicKey = await global.crypto.subtle.importKey(
@@ -95,7 +95,7 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
         cryptoKeyPairData.publicKey,
         defaultImportEncryptionParam,
         false,
-        ['encrypt'],
+        ['encrypt']
       )
     } else {
       return UndefinedKeyOpsError
@@ -111,7 +111,7 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
         cryptoKeyPairData.privateKey,
         defaultImportSigningParam,
         false,
-        ['sign'],
+        ['sign']
       )
     } else if (cryptoKeyPairData.privateKey.key_ops.includes('decrypt')) {
       privateKey = await global.crypto.subtle.importKey(
@@ -119,7 +119,7 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
         cryptoKeyPairData.privateKey,
         defaultImportEncryptionParam,
         false,
-        ['decrypt'],
+        ['decrypt']
       )
     } else {
       return UndefinedKeyOpsError
@@ -135,7 +135,7 @@ export async function importKey (cryptoKeyPairData: ICryptoKeyPairData): Promise
  *
  * @param signingPrivateKey The private key used to sign.
  */
-export function sign (plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
+export function sign(plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
   return global.crypto.subtle
     .sign(defaultSigningParams, signingPrivateKey, plaintext)
     .then((signature) => new Uint8Array(signature)) as Promise<Uint8Array>
@@ -146,7 +146,7 @@ export function sign (plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
  *
  * @param signingPublicKey THe public Key associated with the private key used to sign initially.
  */
-export function verifySignature (plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey) {
+export function verifySignature(plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey) {
   return global.crypto.subtle.verify(defaultSigningParams, signingPublicKey, signature, plaintext) as Promise<boolean>
 }
 
@@ -155,7 +155,7 @@ export function verifySignature (plaintext: Uint8Array, signature: Uint8Array, s
  *
  * @param encryptionPublicKey The public key used to encrypt.
  */
-export function encrypt (plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
+export function encrypt(plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
   return global.crypto.subtle
     .encrypt(defaultEncryptParams, encryptionPublicKey, plaintext)
     .then((ciphertext) => new Uint8Array(ciphertext)) as Promise<Uint8Array>
@@ -166,7 +166,7 @@ export function encrypt (plaintext: Uint8Array, encryptionPublicKey: CryptoKey) 
  *
  * @param encryptionPrivateKey The private key associated to the public key used to encrypt.
  */
-export function decrypt (ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey) {
+export function decrypt(ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey) {
   return global.crypto.subtle
     .decrypt(defaultEncryptParams, encryptionPrivateKey, ciphertext)
     .then((plaintext) => new Uint8Array(plaintext)) as Promise<Uint8Array>

@@ -18,7 +18,7 @@
 const encoder = global ? new (require('text-encoding')).TextEncoder() : new TextEncoder()
 const decoder = global ? new (require('text-encoding')).TextDecoder() : new TextDecoder()
 
-export function randStr () {
+export function randStr() {
   const strLength = 20
   let str = ''
   for (let i = 0; i < strLength; i++) {
@@ -27,10 +27,10 @@ export function randStr () {
   return str2buffer(str)
 }
 
-export function str2buffer (str: string) {
+export function str2buffer(str: string) {
   return encoder.encode(str)
 }
 
-export function buffer2str (buffer: BufferSource) {
+export function buffer2str(buffer: BufferSource) {
   return decoder.decode(buffer as ArrayBuffer)
 }

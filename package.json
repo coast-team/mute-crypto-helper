@@ -22,6 +22,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
+    "markdownlint-cli": "^0.8.1",
     "prettier": "^1.12.1",
     "text-encoding": "^0.6.4",
     "tslint": "^5.9.1",
@@ -33,7 +34,8 @@
     "doc": "typedoc --theme minimal --out docs/ src/",
     "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs && tsc --outDir dist/esm -m ES2015",
     "test": "karma start",
-    "test-node": "npm run build && jasmine --config=./jasmine.json"
+    "test-node": "npm run build && jasmine --config=./jasmine.json",
+    "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md"
   },
   "repository": {
     "type": "git",
