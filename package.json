@@ -23,6 +23,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
+    "lint-staged": "^7.0.4",
     "markdownlint-cli": "^0.8.1",
     "prettier": "^1.12.1",
     "text-encoding": "^0.6.4",
@@ -37,7 +38,7 @@
     "test": "karma start",
     "test-node": "npm run build && jasmine --config=./jasmine.json",
     "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md",
-    "precommit": "npm run lint"
+    "precommit": "lint-staged && npm test -- --single-run --no-auto-watch"
   },
   "repository": {
     "type": "git",
@@ -52,5 +53,23 @@
   "bugs": {
     "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
   },
-  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme"
+  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme",
+  "lint-staged": {
+    "linters": {
+      "*.md": [
+        "prettier --write --list-different",
+        "git add",
+        "markdownlint"
+      ],
+      "*.ts": [
+        "tslint --fix -p tsconfig.json",
+        "git add"
+      ],
+      "*.{ts,json,scss,css}": [
+        "prettier --write --list-different",
+        "git add"
+      ]
+    },
+    "concurrent": false
+  }
 }
