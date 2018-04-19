@@ -15,8 +15,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-const encoder = new (require('text-encoding')).TextEncoder()
-const decoder = new (require('text-encoding')).TextDecoder()
+const encoder = global ? new (require('text-encoding')).TextEncoder() : new TextEncoder()
+const decoder = global ? new (require('text-encoding')).TextDecoder() : new TextDecoder()
 
 export function randStr () {
   const strLength = 20

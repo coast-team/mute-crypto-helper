@@ -1,6 +1,7 @@
 {
-  "spec_dir": "distForTest/test",
+  "spec_dir": "dist/commonjs/test",
   "spec_files": ["**/*.test.js"],
+  "helpers": ["../src/index.node.js", "jasmine.helper.js"],
   "stopSpecOnExpectationFailure": false,
   "random": true
 }

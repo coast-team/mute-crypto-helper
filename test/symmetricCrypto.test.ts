@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { symmetricCrypto as symCrypto } from '../src/index.node'
+import { symmetricCrypto as symCrypto } from '../src/index.common'
 import * as symCryptoHelper from '../src/symmetricCryptoHelper'
 import * as helper from './helper'
 

@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "es2015",
+    "module": "commonjs",
     "lib": ["es2017", "dom"],
     "moduleResolution": "node",
     "downlevelIteration": true,
-    "types": ["text-encoding", "jasmine", "node"],
+    "types": ["jasmine", "node"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
-    "declarationDir": "dist/types"
+    "outDir": "dist",
+    "removeComments": true,
+    "sourceMap": true
   },
   "include": ["src/**/*", "test/**/*"]
 }

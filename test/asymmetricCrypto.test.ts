@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { asymmetricCrypto as asymCrypto } from '../src/index.node'
+import { asymmetricCrypto as asymCrypto } from '../src/index.common'
 import * as helper from './helper'
 
 describe('Asymmetric Crypto API wrapper test\n', () => {
@@ -292,7 +292,7 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
             expect(isValid).toBeTruthy()
             done()
           })
-          .catch(fail),
+          .catch(fail)
       )
       .catch(fail)
   })
@@ -308,7 +308,7 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
             expect(plaintext).toEqual(data)
             done()
           })
-          .catch(fail),
+          .catch(fail)
       )
       .catch(fail)
   })
