@@ -5,7 +5,7 @@
     "lib": ["es2017", "dom"],
     "moduleResolution": "node",
     "downlevelIteration": true,
-    "types": ["text-encoding", "jasmine"],
+    "types": ["text-encoding", "jasmine", "node"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,

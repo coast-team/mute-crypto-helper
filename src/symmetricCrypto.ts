@@ -30,7 +30,7 @@ import {
  * @see {@link defaultSymmetricEncryptionParams}
  */
 export function generateEncryptionKey () {
-  return window.crypto.subtle.generateKey(
+  return global.crypto.subtle.generateKey(
     defaultSymmetricEncryptionParams,
     true, // whether the key is extractable (i.e. can be used in exportKey)
     ['encrypt', 'decrypt'],
@@ -42,7 +42,7 @@ export function generateEncryptionKey () {
  * The CryptoKeyPair should be the same as returned by {@link generateEncryptionKey}.
  */
 export function exportKey (cryptoKey: CryptoKey) {
-  return window.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
+  return global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
 }
 
 /**
@@ -50,7 +50,7 @@ export function exportKey (cryptoKey: CryptoKey) {
  * The JSON Web Key should be the same as returned by {@link exportKey}.
  */
 export function importKey (cryptoKeyData: JsonWebKey) {
-  return window.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams, false, [
+  return global.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams as any, false, [
     'encrypt',
     'decrypt',
   ]) as Promise<CryptoKey>
@@ -64,7 +64,7 @@ export function importKey (cryptoKeyData: JsonWebKey) {
 export async function encrypt (plaintext: Uint8Array, encryptionKey: CryptoKey) {
   const params = getDefaultEncryptParams(true)
 
-  const ciphertext = await window.crypto.subtle.encrypt(params, encryptionKey, plaintext)
+  const ciphertext = await global.crypto.subtle.encrypt(params, encryptionKey, plaintext)
 
   return joinNonceCiphertext(params.counter, new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
@@ -79,5 +79,5 @@ export async function decrypt (data: Uint8Array, encryptionKey: CryptoKey) {
   const [nonce, ciphertext] = await splitNonceCiphertext(data)
   const params = getDefaultEncryptParams(false)
   params.counter = nonce
-  return window.crypto.subtle.decrypt(params, encryptionKey, ciphertext).then((buffer) => new Uint8Array(buffer))
+  return global.crypto.subtle.decrypt(params, encryptionKey, ciphertext).then((buffer) => new Uint8Array(buffer))
 }

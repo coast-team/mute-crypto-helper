@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import * as asymCrypto from '../src/asymmetricCrypto'
+import { asymmetricCrypto as asymCrypto } from '../src/index.node'
 import * as helper from './helper'
 
 describe('Asymmetric Crypto API wrapper test\n', () => {

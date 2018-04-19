@@ -82,5 +82,5 @@ export function splitNonceCiphertext (data: Uint8Array): Promise<[Uint8Array, Ui
 }
 
 function generateNonce (): Uint8Array {
-  return window.crypto.getRandomValues(new Uint8Array(nonceLength))
+  return global.crypto.getRandomValues(new Uint8Array(nonceLength)) as Uint8Array
 }

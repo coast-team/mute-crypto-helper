@@ -15,8 +15,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
-const encoder = new TextEncoder()
-const decoder = new TextDecoder()
+const encoder = new (require('text-encoding')).TextEncoder()
+const decoder = new (require('text-encoding')).TextDecoder()
 
 export function randStr () {
   const strLength = 20
@@ -32,5 +32,5 @@ export function str2buffer (str: string) {
 }
 
 export function buffer2str (buffer: BufferSource) {
-  return decoder.decode(buffer)
+  return decoder.decode(buffer as ArrayBuffer)
 }

@@ -3,13 +3,18 @@ const tsConfig = { include: ['src/**/*.ts'], useTsconfigDeclarationDir: true }
 
 export default [
   {
-    input: 'src/index.ts',
+    input: 'src/index.node.ts',
     output: [{ file: 'dist/crypto-api-wrapper.cjs.js', format: 'cjs', sourcemap: true }],
     plugins: [typescript(tsConfig)],
   },
   {
-    input: 'src/index.ts',
-    output: [{ file: 'dist/crypto-api-wrapper.es.js', format: 'es', sourcemap: true }],
+    input: 'src/index.node.ts',
+    output: [{ file: 'dist/crypto-api-wrapper.node.es.js', format: 'es', sourcemap: true }],
+    plugins: [typescript(tsConfig)],
+  },
+  {
+    input: 'src/index.browser.ts',
+    output: [{ file: 'dist/crypto-api-wrapper.browser.es.js', format: 'es', sourcemap: true }],
     plugins: [typescript(tsConfig)],
   },
 ]

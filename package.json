@@ -3,31 +3,42 @@
   "version": "0.1.0-beta-2",
   "description": "## Web Crypto wrapper",
   "main": "dist/crypto-api-wrapper.cjs.js",
-  "module": "dist/crypto-api-wrapper.es.js",
-  "types": "dist/types/src/index.ts",
-  "dependencies": {},
+  "module": "dist/crypto-api-wrapper.node.es.js",
+  "browser": "dist/crypto-api-wrapper.browser.es.js",
+  "types": "dist/types/src/index.browser.d.ts",
+  "dependencies": {
+    "core-js": "^2.5.5",
+    "node-webcrypto-ossl": "^1.0.36"
+  },
+  "peerDependencies": {
+    "node-webcrypto-ossl": "^1.0.36"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
+    "@types/node": "^8.0.0",
     "@types/text-encoding": "0.0.32",
-    "jasmine-core": "^3.1.0",
+    "jasmine": "^3.1.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.1",
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
-    "prettier": "^1.11.1",
-    "rollup": "^0.58.0",
+    "prettier": "^1.12.1",
+    "rollup": "^0.58.1",
     "rollup-plugin-typescript2": "^0.13.0",
+    "text-encoding": "^0.6.4",
+    "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",
     "typedoc": "^0.11.1",
-    "typescript": "^2.7.2"
+    "typescript": "^2.8.1"
   },
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/",
     "build": "rm -rf dist && rollup -c rollup.config.js",
-    "test": "karma start"
+    "test": "karma start",
+    "test-node": "ts-node node_modules/.bin/jasmine -- --config=./jasmine.json"
   },
   "repository": {
     "type": "git",
