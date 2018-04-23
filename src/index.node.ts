@@ -1,5 +1,6 @@
 try {
-  global.crypto = require('node-webcrypto-ossl')
+  const webcrypto = require('node-webcrypto-ossl')
+  global.crypto = new webcrypto()
 } catch (err) {
   console.warn(err.message)
   global.process.exit(1)

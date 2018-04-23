@@ -15,9 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { symmetricCrypto as symCrypto } from '../src/index.common'
-import * as symCryptoHelper from '../src/symmetricCryptoHelper'
-import * as helper from './helper'
+import * as symCryptoHelper from '../../src/crypto/helper/symmetricCryptoHelper'
+import { symmetricCrypto as symCrypto } from '../../src/index.common'
+import * as helper from '../helper/helper'
 
 describe('Symmetric Crypto API wrapper test\n', () => {
   let encryptionKey: CryptoKey
@@ -77,6 +77,7 @@ describe('Symmetric Crypto API wrapper test\n', () => {
       .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
       .then((plaintext) => {
         expect(helper.buffer2str(plaintext)).toEqual(s)
+        console.info(helper.buffer2str(plaintext))
         done()
       })
       .catch(fail)

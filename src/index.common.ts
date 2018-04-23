@@ -1,4 +1,4 @@
-import * as asymmetricCrypto from './asymmetricCrypto'
-import * as symmetricCrypto from './symmetricCrypto'
+import * as asymmetricCrypto from './crypto/asymmetricCrypto'
+import * as symmetricCrypto from './crypto/symmetricCrypto'
 
 export { asymmetricCrypto, symmetricCrypto }

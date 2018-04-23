@@ -8,4 +8,3 @@ npm-debug*
 # Test coverage
 coverage
 dist
-distForTest

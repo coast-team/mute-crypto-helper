@@ -3,5 +3,5 @@
   "spec_files": ["**/*.test.js"],
   "helpers": ["../src/index.node.js", "jasmine.helper.js"],
   "stopSpecOnExpectationFailure": false,
-  "random": true
+  "random": false
 }

@@ -22,8 +22,8 @@ import {
   defaultImportEncryptionParam,
   defaultImportSigningParam,
   defaultSigningParams,
-} from './asymmetricCryptoHelper'
-import { defaultCryptoKeyDataFormat } from './cryptoHelper'
+} from './helper/asymmetricCryptoHelper'
+import { defaultCryptoKeyDataFormat } from './helper/cryptoHelper'
 
 /**
  * An ICryptoKeyPairData consists of 2 JSON Web Keys, the public and private ones.
@@ -74,10 +74,9 @@ export async function exportKey(cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKe
  * The ICryptoKeyPairData should be the same as returned by {@link exportKey}.
  */
 export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
-  const UndefinedKeyOpsError = Promise.reject(
-    new TypeError(`key_ops should not be undefined.\
+  const UndefinedKeyOpsError = new TypeError(`key_ops should not be undefined.\
     cryptoKeyPairData should be the same object as returned by exportKey ...`)
-  )
+
   let publicKey: CryptoKey
   let privateKey: CryptoKey
   if (cryptoKeyPairData.publicKey.key_ops) {
@@ -86,7 +85,7 @@ export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<
         defaultCryptoKeyDataFormat,
         cryptoKeyPairData.publicKey,
         defaultImportSigningParam,
-        false,
+        true,
         ['verify']
       )
     } else if (cryptoKeyPairData.publicKey.key_ops.includes('encrypt')) {
@@ -94,14 +93,14 @@ export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<
         defaultCryptoKeyDataFormat,
         cryptoKeyPairData.publicKey,
         defaultImportEncryptionParam,
-        false,
+        true,
         ['encrypt']
       )
     } else {
-      return UndefinedKeyOpsError
+      return Promise.reject(UndefinedKeyOpsError)
     }
   } else {
-    return UndefinedKeyOpsError
+    return Promise.reject(UndefinedKeyOpsError)
   }
 
   if (cryptoKeyPairData.privateKey.key_ops) {
@@ -110,7 +109,7 @@ export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<
         defaultCryptoKeyDataFormat,
         cryptoKeyPairData.privateKey,
         defaultImportSigningParam,
-        false,
+        true,
         ['sign']
       )
     } else if (cryptoKeyPairData.privateKey.key_ops.includes('decrypt')) {
@@ -118,14 +117,14 @@ export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<
         defaultCryptoKeyDataFormat,
         cryptoKeyPairData.privateKey,
         defaultImportEncryptionParam,
-        false,
+        true,
         ['decrypt']
       )
     } else {
-      return UndefinedKeyOpsError
+      return Promise.reject(UndefinedKeyOpsError)
     }
   } else {
-    return UndefinedKeyOpsError
+    return Promise.reject(UndefinedKeyOpsError)
   }
   return { publicKey, privateKey } as CryptoKeyPair
 }

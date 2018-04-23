@@ -15,14 +15,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { defaultCryptoKeyDataFormat } from './cryptoHelper'
+import { defaultCryptoKeyDataFormat } from './helper/cryptoHelper'
 import {
   defaultImportEncryptionParams,
   defaultSymmetricEncryptionParams,
   getDefaultEncryptParams,
   joinNonceCiphertext,
   splitNonceCiphertext,
-} from './symmetricCryptoHelper'
+} from './helper/symmetricCryptoHelper'
 
 /**
  * generateEncryptionKey generates a cryptoKeyPair with sane defaults to be used for symmetric encryption purpose.
@@ -50,7 +50,7 @@ export function exportKey(cryptoKey: CryptoKey) {
  * The JSON Web Key should be the same as returned by {@link exportKey}.
  */
 export function importKey(cryptoKeyData: JsonWebKey) {
-  return global.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams as any, false, [
+  return global.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams as any, true, [
     'encrypt',
     'decrypt',
   ]) as Promise<CryptoKey>

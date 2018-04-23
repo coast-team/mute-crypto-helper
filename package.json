@@ -5,7 +5,9 @@
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
   "browser": "dist/esm/src/index.browser.js",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "core-js": "^2.5.5"
   },
@@ -37,7 +39,7 @@
     "doc": "typedoc --theme minimal --out docs/ src/",
     "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs && tsc --outDir dist/esm -m ES2015",
     "test": "karma start",
-    "test-node": "npm run build && jasmine --config=./jasmine.json",
+    "test-node": "npm run build && jasmine --config=jasmine.json",
     "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md",
     "precommit": "lint-staged && npm test -- --single-run --no-auto-watch"
   },
