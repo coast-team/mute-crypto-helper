@@ -77,7 +77,6 @@ describe('Symmetric Crypto API wrapper test\n', () => {
       .then((ciphertext) => symCrypto.decrypt(ciphertext, encryptionKey))
       .then((plaintext) => {
         expect(helper.buffer2str(plaintext)).toEqual(s)
-        console.info(helper.buffer2str(plaintext))
         done()
       })
       .catch(fail)
