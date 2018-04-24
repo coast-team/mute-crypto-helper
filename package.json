@@ -1,6 +1,6 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.2.0-beta-1",
+  "version": "0.2.1-beta-1",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
@@ -36,7 +36,7 @@
     "typescript": "^2.8.1"
   },
   "scripts": {
-    "doc": "typedoc --theme minimal --out docs/ src/",
+    "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
     "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs && tsc --outDir dist/esm -m ES2015",
     "test": "karma start",
     "test-node": "npm run build && jasmine --config=jasmine.json",
