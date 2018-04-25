@@ -1,10 +1,11 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.2.1-beta-1",
+  "version": "0.2.2-beta-1",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
   "browser": "dist/esm/src/index.browser.js",
+  "types": "dist/esm/src/index.node.d.ts",
   "files": [
     "dist/"
   ],
