@@ -913,10 +913,13 @@ img { max-width: 100%; }
 			<a href="_crypto_helper_symmetriccryptohelper_.html#encryptionalgo" class="tsd-kind-icon">encryption<wbr>Algo</a>
 		</li>
 		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+			<a href="_crypto_helper_symmetriccryptohelper_.html#ivlength" class="tsd-kind-icon">iv<wbr>Length</a>
+		</li>
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 			<a href="_crypto_helper_symmetriccryptohelper_.html#keysize" class="tsd-kind-icon">key<wbr>Size</a>
 		</li>
 		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-			<a href="_crypto_helper_symmetriccryptohelper_.html#noncelength" class="tsd-kind-icon">nonce<wbr>Length</a>
+			<a href="_crypto_helper_symmetriccryptohelper_.html#taglength" class="tsd-kind-icon">tag<wbr>Length</a>
 		</li>
 		<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 			<a href="_crypto_helper_symmetriccryptohelper_.html#generatenonce" class="tsd-kind-icon">generate<wbr>Nonce</a>
@@ -948,8 +951,9 @@ img { max-width: 100%; }
 						<h3>Variables</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_crypto_helper_symmetriccryptohelper_.html#encryptionalgo" class="tsd-kind-icon">encryption<wbr>Algo</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_crypto_helper_symmetriccryptohelper_.html#ivlength" class="tsd-kind-icon">iv<wbr>Length</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_crypto_helper_symmetriccryptohelper_.html#keysize" class="tsd-kind-icon">key<wbr>Size</a></li>
-							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_crypto_helper_symmetriccryptohelper_.html#noncelength" class="tsd-kind-icon">nonce<wbr>Length</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_crypto_helper_symmetriccryptohelper_.html#taglength" class="tsd-kind-icon">tag<wbr>Length</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -976,12 +980,32 @@ img { max-width: 100%; }
 			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 				<a name="encryptionalgo" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagConst">Const</span> encryption<wbr>Algo</h3>
-				<div class="tsd-signature tsd-kind-icon">encryption<wbr>Algo<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"AES-CTR"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AES-CTR&quot;</span></div>
+				<div class="tsd-signature tsd-kind-icon">encryption<wbr>Algo<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"AES-GCM"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AES-GCM&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L18">crypto/helper/symmetricCryptoHelper.ts:18</a></li>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L21">crypto/helper/symmetricCryptoHelper.ts:21</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Default encryption to use. AES-GCM uses an IV and outputs a ciphertext which also contains an authenticated tag.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+				<a name="ivlength" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> iv<wbr>Length</h3>
+				<div class="tsd-signature tsd-kind-icon">iv<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">12</span><span class="tsd-signature-symbol"> =&nbsp;12</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L26">crypto/helper/symmetricCryptoHelper.ts:26</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Default initialization vector length (in bytes) to use.</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 				<a name="keysize" class="tsd-anchor"></a>
@@ -989,19 +1013,24 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">key<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">128</span><span class="tsd-signature-symbol"> =&nbsp;128</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L19">crypto/helper/symmetricCryptoHelper.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L22">crypto/helper/symmetricCryptoHelper.ts:22</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-				<a name="noncelength" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagConst">Const</span> nonce<wbr>Length</h3>
-				<div class="tsd-signature tsd-kind-icon">nonce<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">16</span><span class="tsd-signature-symbol"> =&nbsp;16</span></div>
+				<a name="taglength" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> tag<wbr>Length</h3>
+				<div class="tsd-signature tsd-kind-icon">tag<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">128</span><span class="tsd-signature-symbol"> =&nbsp;128</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L20">crypto/helper/symmetricCryptoHelper.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L30">crypto/helper/symmetricCryptoHelper.ts:30</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Default authentication tag length (in bits) to use.</p>
+					</div>
+				</div>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
@@ -1016,7 +1045,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L84">crypto/helper/symmetricCryptoHelper.ts:84</a></li>
+								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L94">crypto/helper/symmetricCryptoHelper.ts:94</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4>
@@ -1033,7 +1062,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L46">crypto/helper/symmetricCryptoHelper.ts:46</a></li>
+								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L56">crypto/helper/symmetricCryptoHelper.ts:56</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1055,13 +1084,16 @@ img { max-width: 100%; }
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
-								<h5>counter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></h5>
+								<h5>iv<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>length<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>tag<wbr>Length<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 						</ul>
 					</li>
@@ -1077,7 +1109,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L59">crypto/helper/symmetricCryptoHelper.ts:59</a></li>
+								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L69">crypto/helper/symmetricCryptoHelper.ts:69</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1113,7 +1145,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L74">crypto/helper/symmetricCryptoHelper.ts:74</a></li>
+								<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L84">crypto/helper/symmetricCryptoHelper.ts:84</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1146,7 +1178,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">default<wbr>Import<wbr>Encryption<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L34">crypto/helper/symmetricCryptoHelper.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L44">crypto/helper/symmetricCryptoHelper.ts:44</a></li>
 					</ul>
 				</aside>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1155,7 +1187,7 @@ img { max-width: 100%; }
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;encryptionAlgo</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L38">crypto/helper/symmetricCryptoHelper.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L48">crypto/helper/symmetricCryptoHelper.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1171,7 +1203,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">default<wbr>Symmetric<wbr>Encryption<wbr>Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L22">crypto/helper/symmetricCryptoHelper.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L32">crypto/helper/symmetricCryptoHelper.ts:32</a></li>
 					</ul>
 				</aside>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1180,7 +1212,7 @@ img { max-width: 100%; }
 					<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;keySize</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L31">crypto/helper/symmetricCryptoHelper.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L41">crypto/helper/symmetricCryptoHelper.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1196,7 +1228,7 @@ img { max-width: 100%; }
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;encryptionAlgo</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/fc4b700/src/crypto/helper/symmetricCryptoHelper.ts#L26">crypto/helper/symmetricCryptoHelper.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/coast-team/crypto-api-wrapper/blob/301b639/src/crypto/helper/symmetricCryptoHelper.ts#L36">crypto/helper/symmetricCryptoHelper.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
