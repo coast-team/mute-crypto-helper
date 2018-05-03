@@ -63,10 +63,8 @@ export function importKey(cryptoKeyData: JsonWebKey) {
  */
 export async function encrypt(plaintext: Uint8Array, encryptionKey: CryptoKey) {
   const params = getDefaultEncryptParams(true)
-
   const ciphertext = await global.crypto.subtle.encrypt(params, encryptionKey, plaintext)
-
-  return joinNonceCiphertext(params.counter, new Uint8Array(ciphertext)) as Promise<Uint8Array>
+  return joinNonceCiphertext(params.iv, new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
 /**
@@ -78,6 +76,6 @@ export async function encrypt(plaintext: Uint8Array, encryptionKey: CryptoKey) {
 export async function decrypt(data: Uint8Array, encryptionKey: CryptoKey) {
   const [nonce, ciphertext] = await splitNonceCiphertext(data)
   const params = getDefaultEncryptParams(false)
-  params.counter = nonce
+  params.iv = nonce
   return global.crypto.subtle.decrypt(params, encryptionKey, ciphertext).then((buffer) => new Uint8Array(buffer))
 }

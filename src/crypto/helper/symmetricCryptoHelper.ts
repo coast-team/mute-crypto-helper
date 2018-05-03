@@ -15,9 +15,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
-const encryptionAlgo = 'AES-CTR'
+/**
+ * Default encryption to use. AES-GCM uses an IV and outputs a ciphertext which also contains an authenticated tag.
+ */
+const encryptionAlgo = 'AES-GCM'
 const keySize = 128
-const nonceLength = 16
+/**
+ * Default initialization vector length (in bytes) to use.
+ */
+const ivLength = 12
+/**
+ * Default authentication tag length (in bits) to use.
+ */
+const tagLength = 128
 
 export const defaultSymmetricEncryptionParams = {
   /**
@@ -43,11 +53,11 @@ export const defaultImportEncryptionParams = {
  *
  * @params generateNewNonce Should be true if used for encrypting, false if used for decrypting.
  */
-export function getDefaultEncryptParams(generateNewNonce: boolean): { name: string; counter: Uint8Array; length: number } {
+export function getDefaultEncryptParams(generateNewNonce: boolean): { name: string; iv: Uint8Array; length: number; tagLength: number } {
   if (generateNewNonce) {
-    return { name: encryptionAlgo, counter: generateNonce(), length: keySize }
+    return { name: encryptionAlgo, iv: generateNonce(), length: keySize, tagLength }
   } else {
-    return { name: encryptionAlgo, counter: new Uint8Array(), length: keySize }
+    return { name: encryptionAlgo, iv: new Uint8Array(), length: keySize, tagLength }
   }
 }
 
@@ -74,13 +84,13 @@ export function joinNonceCiphertext(nonce: Uint8Array, ciphertext: Uint8Array): 
 export function splitNonceCiphertext(data: Uint8Array): Promise<[Uint8Array, Uint8Array]> {
   return new Promise((resolve) => {
     let result: [Uint8Array, Uint8Array]
-    const nonce = data.slice(0, nonceLength)
-    const ciphertext = data.slice(nonceLength, data.length)
+    const nonce = data.slice(0, ivLength)
+    const ciphertext = data.slice(ivLength, data.length)
     result = [nonce, ciphertext]
     resolve(result)
   })
 }
 
 function generateNonce(): Uint8Array {
-  return global.crypto.getRandomValues(new Uint8Array(nonceLength)) as Uint8Array
+  return global.crypto.getRandomValues(new Uint8Array(ivLength)) as Uint8Array
 }
