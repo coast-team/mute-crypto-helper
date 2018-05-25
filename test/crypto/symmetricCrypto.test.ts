@@ -15,6 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+// import * as cryptoHelper from '../../src/crypto/helper/cryptoHelper'
 import * as symCryptoHelper from '../../src/crypto/helper/symmetricCryptoHelper'
 import { symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
@@ -35,6 +36,19 @@ describe('Symmetric Crypto API wrapper test\n', () => {
       .then((keyDataObj) => symCrypto.importKey(keyDataObj))
       .then((secretCryptoKey) => {
         expect(secretCryptoKey).toEqual(encryptionKey)
+        done()
+      })
+      .catch(fail)
+  })
+
+  it('toB64(keyData), fromB64(keyDataB64) should succeed', (done) => {
+    symCrypto
+      .exportKey(encryptionKey)
+      .then((keyDataObj) => {
+        const keyDataObjB64 = symCrypto.toB64(keyDataObj)
+        console.log(keyDataObjB64)
+        const keyDataObj2 = symCrypto.fromB64(keyDataObjB64)
+        expect(keyDataObj2).toEqual(keyDataObj)
         done()
       })
       .catch(fail)

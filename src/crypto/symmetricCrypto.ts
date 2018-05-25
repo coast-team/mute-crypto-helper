@@ -45,6 +45,14 @@ export function exportKey(cryptoKey: CryptoKey) {
   return global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
 }
 
+export function toB64(keyData: JsonWebKey): string {
+  return btoa(JSON.stringify(keyData))
+}
+
+export function fromB64(keyDataB64: string): JsonWebKey {
+  return JSON.parse(atob(keyDataB64))
+}
+
 /**
  * importKey imports a JSON Web Key to a CryptoKey.
  * The JSON Web Key should be the same as returned by {@link exportKey}.
