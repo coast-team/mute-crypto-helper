@@ -45,10 +45,16 @@ export function exportKey(cryptoKey: CryptoKey) {
   return global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
 }
 
+/**
+ * toB64 encodes the given JSON Web Key to the base64 representation
+ */
 export function toB64(keyData: JsonWebKey): string {
   return btoa(JSON.stringify(keyData))
 }
 
+/**
+ * fromB64 decodes the given Base64 to the corresponding JSON Web Key representation.
+ */
 export function fromB64(keyDataB64: string): JsonWebKey {
   return JSON.parse(atob(keyDataB64))
 }

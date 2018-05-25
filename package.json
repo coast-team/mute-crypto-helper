@@ -1,6 +1,6 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.4.0-beta",
+  "version": "0.4.1",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
@@ -40,10 +40,10 @@
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
     "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs && tsc --outDir dist/esm -m ES2015",
     "test": "karma start",
-    "bash": "",
     "test-node": "npm run build && jasmine --config=jasmine.json",
     "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md",
-    "precommit": "lint-staged && npm test -- --single-run --no-auto-watch"
+    "precommit": "lint-staged && npm test -- --single-run --no-auto-watch",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",

@@ -28,6 +28,8 @@ This lib exports 2 objects : asymmetricCrypto and symmetricCrypto
 
 * generateEncryptionKey()
 * exportKey(encryptionKey)
+* toB64(keydata)
+* fromB64(keydataB64)
 * importKey(keydata)
 * encrypt(plaintext, encryptionKey)
 * decrypt(ciphertext, encryptionKey)

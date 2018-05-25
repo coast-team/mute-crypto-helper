@@ -45,10 +45,12 @@ describe('Symmetric Crypto API wrapper test\n', () => {
     symCrypto
       .exportKey(encryptionKey)
       .then((keyDataObj) => {
-        const keyDataObjB64 = symCrypto.toB64(keyDataObj)
-        console.log(keyDataObjB64)
-        const keyDataObj2 = symCrypto.fromB64(keyDataObjB64)
+        const keyDataObj2 = symCrypto.fromB64(symCrypto.toB64(keyDataObj))
         expect(keyDataObj2).toEqual(keyDataObj)
+        symCrypto.importKey(keyDataObj2).then((secretCryptoKey) => {
+          expect(secretCryptoKey).toEqual(encryptionKey)
+          done()
+        })
         done()
       })
       .catch(fail)
