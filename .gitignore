@@ -8,3 +8,7 @@ npm-debug*
 # Test coverage
 coverage
 dist
+
+# VSCode
+.vscode
+.history
