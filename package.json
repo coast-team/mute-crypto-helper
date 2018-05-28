@@ -18,6 +18,8 @@
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
     "@types/node": "^8.0.0",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
     "jasmine": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
@@ -79,5 +81,10 @@
       ]
     },
     "concurrent": false
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
