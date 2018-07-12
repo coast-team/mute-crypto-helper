@@ -3,8 +3,10 @@
   "version": "0.5.0",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
-  "module": "dist/esm/src/index.node.js",
-  "browser": "dist/esm/src/index.browser.js",
+  "browser": {
+    "buffer": false,
+    "node-webcrypto-ossl": false
+  },
   "types": "dist/esm/src/index.node.d.ts",
   "files": [
     "dist/"
@@ -32,9 +34,9 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
     "lint-staged": "^7.2.0",
-    "markdownlint-cli": "^0.8.2",
+    "markdownlint-cli": "^0.11.0",
     "prettier": "^1.13.7",
-    "standard-changelog": "^1.0.19",
+    "standard-changelog": "^2.0.0",
     "text-encoding": "^0.6.4",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
@@ -43,7 +45,7 @@
   },
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
-    "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs && tsc --outDir dist/esm -m ES2015",
+    "build": "rm -rf dist && tsc --outDir dist/commonjs -m commonjs",
     "test": "karma start",
     "test-node": "npm run build && jasmine --config=jasmine.json",
     "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md",

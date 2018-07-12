@@ -19,7 +19,7 @@ import { keyAgreementCrypto } from '../../src/index.common'
 import { symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
 
-const BN = require('bn.js')
+import BN = require('bn.js')
 
 describe('Key Agreement Crypto API wrapper test\n', () => {
   let sharedSecret: any
@@ -96,8 +96,8 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     expect(sk1.eq(sk2)).toBeTruthy()
     expect(sk2.eq(goodResult)).toBeTruthy()
 
-    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array))
-    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array))
+    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array as any) as Uint8Array)
     expect(secretKey1).toEqual(secretKey2)
   })
 
@@ -124,9 +124,9 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     expect(sk2.eq(sk3)).toBeTruthy()
     expect(sk3.eq(goodResult)).toBeTruthy()
 
-    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array))
-    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array))
-    const secretKey3 = await keyAgreementCrypto.deriveKey(sk3.toArrayLike(Uint8Array))
+    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey3 = await keyAgreementCrypto.deriveKey(sk3.toArrayLike(Uint8Array as any) as Uint8Array)
     expect(secretKey1).toEqual(secretKey2)
     expect(secretKey2).toEqual(secretKey3)
   })
@@ -158,10 +158,10 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     expect(sk3.eq(sk4)).toBeTruthy()
     expect(sk4.eq(goodResult)).toBeTruthy()
 
-    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array))
-    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array))
-    const secretKey3 = await keyAgreementCrypto.deriveKey(sk3.toArrayLike(Uint8Array))
-    const secretKey4 = await keyAgreementCrypto.deriveKey(sk4.toArrayLike(Uint8Array))
+    const secretKey1 = await keyAgreementCrypto.deriveKey(sk1.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey2 = await keyAgreementCrypto.deriveKey(sk2.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey3 = await keyAgreementCrypto.deriveKey(sk3.toArrayLike(Uint8Array as any) as Uint8Array)
+    const secretKey4 = await keyAgreementCrypto.deriveKey(sk4.toArrayLike(Uint8Array as any) as Uint8Array)
     expect(secretKey1).toEqual(secretKey2)
     expect(secretKey2).toEqual(secretKey3)
     expect(secretKey3).toEqual(secretKey4)
