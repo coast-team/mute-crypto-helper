@@ -1,6 +1,6 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
   "module": "dist/esm/src/index.node.js",
@@ -10,34 +10,36 @@
     "dist/"
   ],
   "dependencies": {
-    "core-js": "^2.5.5"
+    "@types/bn.js": "^4.11.1",
+    "bn.js": "^4.11.8",
+    "core-js": "^2.5.7"
   },
   "peerDependencies": {
     "node-webcrypto-ossl": "^1.0.36"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.8.6",
-    "@types/node": "^8.0.0",
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^8.10.21",
     "commitizen": "^2.10.1",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
     "jasmine": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "karma": "^2.0.0",
+    "karma": "^2.0.4",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
-    "karma-jasmine": "^1.1.1",
+    "karma-jasmine": "^1.1.2",
     "karma-spec-reporter": "^0.0.32",
     "karma-typescript": "^3.0.12",
-    "lint-staged": "^7.0.4",
-    "markdownlint-cli": "^0.8.1",
-    "prettier": "^1.12.1",
+    "lint-staged": "^7.2.0",
+    "markdownlint-cli": "^0.8.2",
+    "prettier": "^1.13.7",
     "standard-changelog": "^1.0.19",
     "text-encoding": "^0.6.4",
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.10.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
     "typedoc": "^0.11.1",
-    "typescript": "^2.8.1"
+    "typescript": "^2.9.2"
   },
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",

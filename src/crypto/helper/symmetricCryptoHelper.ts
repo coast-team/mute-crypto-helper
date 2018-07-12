@@ -18,8 +18,8 @@
 /**
  * Default encryption to use. AES-GCM uses an IV and outputs a ciphertext which also contains an authenticated tag.
  */
-const encryptionAlgo = 'AES-GCM'
-const keySize = 128
+export const encryptionAlgo = 'AES-GCM'
+export const keySize = 256
 /**
  * Default initialization vector length (in bytes) to use.
  */

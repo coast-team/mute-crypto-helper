@@ -34,3 +34,7 @@ export function str2buffer(str: string) {
 export function buffer2str(buffer: BufferSource) {
   return decoder.decode(buffer as ArrayBuffer)
 }
+
+export function randomSecret(bytes: number) {
+  return global.crypto.getRandomValues(new Uint8Array(bytes))
+}
