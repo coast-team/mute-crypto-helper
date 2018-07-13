@@ -93,6 +93,11 @@ export function computeSKi(ri: Uint8Array, xi: BN, ziLeft: BN, xiList: BN[]) {
   return res.fromRed().toArrayLike(Uint8Array as any) as Uint8Array
 }
 
+/**
+ * indexOf returns the index of the xi in the given list.
+ * @param xiList the list of all the xi from the users.
+ * @param xi the xi computed by the user.
+ */
 function indexOf(xiList: BN[], xi: BN) {
   let indexOfXi = -1
   xiList.forEach((element, index) => {
