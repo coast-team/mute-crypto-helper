@@ -90,7 +90,7 @@ export function computeSKi(ri: Uint8Array, xi: BN, ziLeft: BN, xiList: BN[]) {
     res.redIMul(xin)
     exponent.isubn(1)
   }
-  return res.fromRed()
+  return res.fromRed().toArrayLike(Uint8Array as any) as Uint8Array
 }
 
 function indexOf(xiList: BN[], xi: BN) {
