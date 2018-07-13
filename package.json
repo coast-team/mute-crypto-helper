@@ -7,7 +7,7 @@
     "buffer": false,
     "node-webcrypto-ossl": false
   },
-  "types": "dist/esm/src/index.node.d.ts",
+  "types": "dist/commonjs/src/index.node.d.ts",
   "files": [
     "dist/"
   ],
