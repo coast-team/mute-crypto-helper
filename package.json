@@ -3,10 +3,7 @@
   "version": "0.6.0",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
-  "browser": {
-    "buffer": false,
-    "node-webcrypto-ossl": false
-  },
+  "browser": "dist/commonjs/src/index.browser.js",
   "types": "dist/commonjs/src/index.node.d.ts",
   "files": [
     "dist/"
