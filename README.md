@@ -15,24 +15,24 @@ This lib exports 2 objects : asymmetricCrypto and symmetricCrypto
 
 ### asymmetricCrypto API
 
-* generateSigningKey()
-* generateEncryptionKey()
-* exportKey(keypair)
-* importKey(keydata)
-* sign(plaintext, privateKey)
-* verify(plaintext, signature, publicKey)
-* encrypt(plaintext, publicKey)
-* decrypt(ciphertext, privateKey)
+- generateSigningKey()
+- generateEncryptionKey()
+- exportKey(keypair)
+- importKey(keydata)
+- sign(plaintext, privateKey)
+- verify(plaintext, signature, publicKey)
+- encrypt(plaintext, publicKey)
+- decrypt(ciphertext, privateKey)
 
 ### symmetricCrypto API
 
-* generateEncryptionKey()
-* exportKey(encryptionKey)
-* toB64(keydata)
-* fromB64(keydataB64)
-* importKey(keydata)
-* encrypt(plaintext, encryptionKey)
-* decrypt(ciphertext, encryptionKey)
+- generateEncryptionKey()
+- exportKey(encryptionKey)
+- toB64(keydata)
+- fromB64(keydataB64)
+- importKey(keydata)
+- encrypt(plaintext, encryptionKey)
+- decrypt(ciphertext, encryptionKey)
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
 [2]: https://coast-team.github.io/crypto-api-wrapper/
