@@ -92,3 +92,8 @@ export const p = new BN(
  * The generator to use.
  */
 export const g = new BN(2)
+
+/**
+ * The size in bytes of the generated ri.
+ */
+export const riSize = 64

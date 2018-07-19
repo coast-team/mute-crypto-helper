@@ -36,5 +36,5 @@ export function buffer2str(buffer: BufferSource) {
 }
 
 export function randomSecret(bytes: number) {
-  return global.crypto.getRandomValues(new Uint8Array(bytes))
+  return global.crypto.getRandomValues(new Uint8Array(bytes)) as Uint8Array
 }
