@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.2...v0.6.3) (2018-07-19)
+
+
+### Bug Fixes
+
+* **types:** fix [@types](https://github.com/types)/bn.js dependency ([5a0598a](https://github.com/coast-team/crypto-api-wrapper/commit/5a0598a))
+
+
+
 <a name="0.6.2"></a>
 ## [0.6.2](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.1...v0.6.2) (2018-07-19)
 
