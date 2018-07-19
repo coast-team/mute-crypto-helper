@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.1...v0.6.2) (2018-07-19)
+
+
+### Features
+
+* **keyagreement:** add generation of the user's random value ([408dd2f](https://github.com/coast-team/crypto-api-wrapper/commit/408dd2f))
+
+
+### BREAKING CHANGES
+
+* **keyagreement:** computeSKi() -> computeSharedSecret()
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.0...v0.6.1) (2018-07-18)
 
