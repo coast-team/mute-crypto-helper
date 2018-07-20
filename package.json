@@ -1,6 +1,6 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "## Web Crypto wrapper",
   "main": "dist/commonjs/src/index.node.js",
   "browser": "dist/commonjs/src/index.browser.js",

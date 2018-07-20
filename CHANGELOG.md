@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.4"></a>
+## [0.6.4](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.3...v0.6.4) (2018-07-20)
+
+
+### Code Refactoring
+
+* **keyagreement:** update types ([029eba9](https://github.com/coast-team/crypto-api-wrapper/commit/029eba9))
+
+
+### BREAKING CHANGES
+
+* **keyagreement:** doesn't export BN anymore (Uint8Array instead)
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.2...v0.6.3) (2018-07-19)
 
