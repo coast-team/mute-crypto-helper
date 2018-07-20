@@ -97,3 +97,11 @@ export const g = new BN(2)
  * The size in bytes of the generated ri.
  */
 export const riSize = 64
+
+export function intArrayToBN(array: Uint8Array) {
+  return new BN(array as Buffer)
+}
+
+export function BNToIntArray(bn: BN) {
+  return bn.toArrayLike(Uint8Array as any) as Uint8Array
+}

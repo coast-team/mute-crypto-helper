@@ -72,8 +72,8 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     const x1 = keyAgreementCrypto.computeXi(globalR1, z2, z2)
     const x2 = keyAgreementCrypto.computeXi(globalR2, z1, z1)
 
-    expect(x1.eqn(1)).toBeTruthy()
-    expect(x1.eq(x2)).toBeTruthy()
+    expect(new BN(x1 as Buffer).eqn(1)).toBeTruthy()
+    expect(new BN(x1 as Buffer).eq(new BN(x2 as Buffer))).toBeTruthy()
   })
 
   it('keyAgreement protocol with 2 users should succeed', async () => {
@@ -141,7 +141,7 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     const x3 = keyAgreementCrypto.computeXi(globalR3, z4, z2)
     const x4 = keyAgreementCrypto.computeXi(globalR4, z1, z3)
 
-    const xiList = [x1.clone(), x2.clone(), x3.clone(), x4.clone()]
+    const xiList = [new Uint8Array(x1), new Uint8Array(x2), new Uint8Array(x3), new Uint8Array(x4)]
 
     const sk1 = keyAgreementCrypto.computeSharedSecret(globalR1, x1, z4, xiList)
     const sk2 = keyAgreementCrypto.computeSharedSecret(globalR2, x2, z1, xiList)

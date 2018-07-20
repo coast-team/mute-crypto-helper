@@ -16,3 +16,21 @@
 // under the License.
 
 export const defaultCryptoKeyDataFormat = 'jwk'
+
+export function int8ArrayEqual(array1: Uint8Array, array2: Uint8Array) {
+  if (array1 === array2) {
+    return true
+  }
+
+  if (array1.byteLength !== array1.byteLength) {
+    return false
+  }
+
+  for (let i = 0; i !== array1.byteLength; i++) {
+    if (array1[i] !== array2[i]) {
+      return false
+    }
+  }
+
+  return true
+}
