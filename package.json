@@ -1,6 +1,6 @@
 {
   "name": "crypto-api-wrapper",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "## Web Crypto wrapper",
   "main": "dist/crypto-api-wrapper.node.es5.cjs.js",
   "module": "dist/crypto-api-wrapper.node.es5.esm.js",
