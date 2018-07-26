@@ -14,17 +14,14 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
-import { BNToIntArray, g, intArrayToBN, KDFDeriveKeyParams, KDFKeyParams, p, riSize } from './helper/keyAgreementCryptoHelper'
-
-import BN = require('bn.js')
+import { BN } from '../misc/bn'
 import { int8ArrayEqual } from './helper/cryptoHelper'
+import { BNToIntArray, g, intArrayToBN, KDFDeriveKeyParams, KDFKeyParams, p, riSize } from './helper/keyAgreementCryptoHelper'
 
 /**
  * Prime number to use with the different modular operations.
  */
 const red = BN.mont(p)
-// const BN = require('bn.js')
 
 /**
  * deriveKey derives a symmetric key given a shared secret.
@@ -66,7 +63,7 @@ export function generateRi() {
 export function computeZi(ri: BN) {
   const res = g
     .toRed(red)
-    .redPow(ri as any)
+    .redPow(ri)
     .fromRed()
   return BNToIntArray(res)
 }
@@ -78,8 +75,8 @@ export function computeZi(ri: BN) {
  * @param ziLeft the computed zi by the 'right' neighbor (in a cycle)
  */
 export function computeXi(ri: BN, ziRight: Uint8Array, ziLeft: Uint8Array) {
-  const modInvM = new BN(ziLeft as Buffer).toRed(red).redInvm()
-  const res = modInvM.redMul(new BN(ziRight as Buffer).toRed(red)).redPow(ri as any)
+  const modInvM = new BN(ziLeft).toRed(red).redInvm()
+  const res = modInvM.redMul(new BN(ziRight).toRed(red)).redPow(ri)
   return BNToIntArray(res.fromRed())
 }
 
@@ -91,14 +88,14 @@ export function computeXi(ri: BN, ziRight: Uint8Array, ziLeft: Uint8Array) {
  * @param xiList the list of all the xi computed by all the users.
  */
 export function computeSharedSecret(ri: BN, xi: Uint8Array, ziLeft: Uint8Array, xiList: Uint8Array[]) {
-  const res = new BN(ziLeft as Buffer).toRed(red).redPow(ri.muln(xiList.length) as any)
+  const res = new BN(ziLeft).toRed(red).redPow(ri.muln(xiList.length))
   const iInit = indexOf(xiList, xi)
   const exponent = new BN(xiList.length - 1)
   let xin
   let ind: number
   for (let i = 0; exponent.gtn(0); i++) {
     ind = (iInit + i) % xiList.length
-    xin = new BN(xiList[ind] as Buffer).toRed(red).redPow(exponent as any)
+    xin = new BN(xiList[ind]).toRed(red).redPow(exponent)
     res.redIMul(xin)
     exponent.isubn(1)
   }

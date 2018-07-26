@@ -9,7 +9,7 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'karma-typescript'],
 
     // list of files / patterns to load in the browser
-    files: ['src/**/*.ts', 'test/**/*.ts'],
+    files: ['src/misc/bn.js', 'src/**/*.ts', 'test/**/*.ts'],
 
     // list of files to exclude
     exclude: ['karma.conf.js', 'src/index.node.ts', 'test/jasmine.helper.ts'],
@@ -17,7 +17,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser available preprocessors:
     // https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.ts': ['karma-typescript'],
+      'src/**/*.+(js|ts)': ['karma-typescript'],
       'test/**/*.ts': ['karma-typescript'],
     },
 
@@ -25,33 +25,13 @@ module.exports = function(config) {
       tsconfig: 'tsconfig.json',
       compilerOptions: {
         module: 'commonjs',
-        // target: "es2017",
-        // lib: [ "es2017", "dom" ],
-        // moduleResolution: 'node',
         sourceMap: true,
-        // downlevelIteration: true,
-        // types: [ 'text-encoding']
+        allowJs: true,
       },
-      // bundlerOptions: {
-      //   exclude: ['wrtc', 'text-encoding', 'uws', 'url'],
-      //   addNodeGlobals: false,
-      // },
       include: ['src/**/*.ts', 'test/**/*.ts'],
-      // coverageOptions: {
-      //   exclude: [/src\/proto\/index\.js/i, /test\/.*/i, /.*polyfills*/i]
-      // },
-      // exclude: ['**/*adapter_factory.js'],
       reports: {
         html: {},
         'text-summary': '',
-      },
-    },
-
-    rollupPreprocessor: {
-      output: {
-        format: 'iife', // Helps prevent naming collisions.
-        name: 'cryptoapiwrapper', // Required for 'iife' format.
-        sourcemap: 'inline', // Sensible for testing.
       },
     },
 

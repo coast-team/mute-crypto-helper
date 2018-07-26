@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "declarationDir": "dist/types",
     "target": "es5",
-    "module": "es2015",
+    "module": "commonjs",
     "lib": ["es2017", "dom"],
     "downlevelIteration": true,
     "types": ["jasmine", "node"],
@@ -11,9 +10,10 @@
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "dist",
+    "outDir": "._test",
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "allowJs": true
   },
   "include": ["src/**/*", "test/**/*"]
 }

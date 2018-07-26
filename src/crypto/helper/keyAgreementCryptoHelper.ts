@@ -15,9 +15,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import { BN } from '../../misc/bn'
 import { encryptionAlgo, keySize } from './symmetricCryptoHelper'
-
-import BN = require('bn.js')
 
 /**
  * Default parameters for generating the Key Derivative Function object.
@@ -99,9 +98,9 @@ export const g = new BN(2)
 export const riSize = 64
 
 export function intArrayToBN(array: Uint8Array) {
-  return new BN(array as Buffer)
+  return new BN(array)
 }
 
 export function BNToIntArray(bn: BN) {
-  return bn.toArrayLike(Uint8Array as any) as Uint8Array
+  return bn.toArrayLike(Uint8Array)
 }

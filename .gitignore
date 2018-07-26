@@ -12,3 +12,6 @@ dist
 # VSCode
 .vscode
 .history
+
+# Test build
+._test

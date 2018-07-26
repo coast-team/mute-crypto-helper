@@ -15,11 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import { BN } from '../../src/index.common'
 import { keyAgreementCrypto } from '../../src/index.common'
 import { symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
-
-import BN = require('bn.js')
 
 describe('Key Agreement Crypto API wrapper test\n', () => {
   let globalR1: BN
