@@ -97,10 +97,10 @@ export const g = new BN(2)
  */
 export const riSize = 64
 
-export function intArrayToBN(array: Uint8Array) {
+export function intArrayToBN(array: Uint8Array): BN {
   return new BN(array)
 }
 
-export function BNToIntArray(bn: BN) {
+export function BNToIntArray(bn: BN): Uint8Array {
   return bn.toArrayLike(Uint8Array)
 }

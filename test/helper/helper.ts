@@ -28,7 +28,7 @@ if ('window' in global) {
   decoder = new textEncoding.TextDecoder()
 }
 
-export function randStr() {
+export function randStr(): Uint8Array {
   const strLength = 20
   let str = ''
   for (let i = 0; i < strLength; i++) {
@@ -37,14 +37,14 @@ export function randStr() {
   return str2buffer(str)
 }
 
-export function str2buffer(str: string) {
+export function str2buffer(str: string): Uint8Array {
   return encoder.encode(str)
 }
 
-export function buffer2str(buffer: BufferSource) {
+export function buffer2str(buffer: BufferSource): string {
   return decoder.decode(buffer as ArrayBuffer)
 }
 
-export function randomSecret(bytes: number) {
+export function randomSecret(bytes: number): Uint8Array {
   return env.crypto.getRandomValues(new Uint8Array(bytes)) as Uint8Array
 }

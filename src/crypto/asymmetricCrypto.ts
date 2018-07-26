@@ -135,10 +135,9 @@ export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<
  *
  * @param signingPrivateKey The private key used to sign.
  */
-export function sign(plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
-  return env.crypto.subtle
-    .sign(defaultSigningParams, signingPrivateKey, plaintext)
-    .then((signature) => new Uint8Array(signature)) as Promise<Uint8Array>
+export async function sign(plaintext: Uint8Array, signingPrivateKey: CryptoKey): Promise<Uint8Array> {
+  const signature = await env.crypto.subtle.sign(defaultSigningParams, signingPrivateKey, plaintext)
+  return new Uint8Array(signature)
 }
 
 /**
@@ -146,8 +145,8 @@ export function sign(plaintext: Uint8Array, signingPrivateKey: CryptoKey) {
  *
  * @param signingPublicKey THe public Key associated with the private key used to sign initially.
  */
-export function verifySignature(plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey) {
-  return env.crypto.subtle.verify(defaultSigningParams, signingPublicKey, signature, plaintext) as Promise<boolean>
+export async function verifySignature(plaintext: Uint8Array, signature: Uint8Array, signingPublicKey: CryptoKey): Promise<boolean> {
+  return env.crypto.subtle.verify(defaultSigningParams, signingPublicKey, signature, plaintext)
 }
 
 /**
@@ -155,10 +154,9 @@ export function verifySignature(plaintext: Uint8Array, signature: Uint8Array, si
  *
  * @param encryptionPublicKey The public key used to encrypt.
  */
-export function encrypt(plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
-  return env.crypto.subtle
-    .encrypt(defaultEncryptParams, encryptionPublicKey, plaintext)
-    .then((ciphertext) => new Uint8Array(ciphertext)) as Promise<Uint8Array>
+export async function encrypt(plaintext: Uint8Array, encryptionPublicKey: CryptoKey): Promise<Uint8Array> {
+  const ciphertext = await env.crypto.subtle.encrypt(defaultEncryptParams, encryptionPublicKey, plaintext)
+  return new Uint8Array(ciphertext)
 }
 
 /**
@@ -166,8 +164,7 @@ export function encrypt(plaintext: Uint8Array, encryptionPublicKey: CryptoKey) {
  *
  * @param encryptionPrivateKey The private key associated to the public key used to encrypt.
  */
-export function decrypt(ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey) {
-  return env.crypto.subtle
-    .decrypt(defaultEncryptParams, encryptionPrivateKey, ciphertext)
-    .then((plaintext) => new Uint8Array(plaintext)) as Promise<Uint8Array>
+export async function decrypt(ciphertext: Uint8Array, encryptionPrivateKey: CryptoKey): Promise<Uint8Array> {
+  const plaintext = await env.crypto.subtle.decrypt(defaultEncryptParams, encryptionPrivateKey, ciphertext)
+  return new Uint8Array(plaintext)
 }

@@ -17,7 +17,7 @@
 
 export const defaultCryptoKeyDataFormat = 'jwk'
 
-export function int8ArrayEqual(array1: Uint8Array, array2: Uint8Array) {
+export function int8ArrayEqual(array1: Uint8Array, array2: Uint8Array): boolean {
   if (array1 === array2) {
     return true
   }
