@@ -3,4 +3,4 @@ import * as keyAgreementCrypto from './crypto/keyAgreementCrypto'
 import * as symmetricCrypto from './crypto/symmetricCrypto'
 
 export { asymmetricCrypto, keyAgreementCrypto, symmetricCrypto }
-export { BN } from './misc/bn'
+export { BN } from './bn.js/bn'

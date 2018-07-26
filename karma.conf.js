@@ -9,7 +9,7 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'karma-typescript'],
 
     // list of files / patterns to load in the browser
-    files: ['src/misc/bn.js', 'src/**/*.ts', 'test/**/*.ts'],
+    files: ['src/bn.js/bn.js', 'src/**/*.ts', 'test/**/*.ts'],
 
     // list of files to exclude
     exclude: ['karma.conf.js', 'src/index.node.ts', 'test/jasmine.helper.ts'],

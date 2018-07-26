@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { BN } from '../../misc/bn'
+import { BN } from '../../bn.js/bn'
 import { encryptionAlgo, keySize } from './symmetricCryptoHelper'
 
 /**

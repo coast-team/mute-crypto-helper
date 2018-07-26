@@ -14,7 +14,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-import { BN } from '../misc/bn'
+import { BN } from '../bn.js/bn'
 import { env } from '../misc/env'
 import { int8ArrayEqual } from './helper/cryptoHelper'
 import { BNToIntArray, g, intArrayToBN, KDFDeriveKeyParams, KDFKeyParams, p, riSize } from './helper/keyAgreementCryptoHelper'

@@ -31,7 +31,7 @@
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
     "build": "rm -rf dist && rollup --config",
-    "postbuild": "cp -r src/misc dist/types/src/",
+    "postbuild": "mkdir dist/types/src/bn.js && cp src/bn.js/bn.d.ts dist/types/src/bn.js",
     "test": "npm run test-node && npm run test-browser",
     "test-browser": "karma start",
     "pretest-node": "tsc -p tsconfig.test.json",
