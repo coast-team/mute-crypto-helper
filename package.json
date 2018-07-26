@@ -11,6 +11,36 @@
   "files": [
     "dist/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coast-team/crypto-api-wrapper.git"
+  },
+  "keywords": [
+    "webcrypto",
+    "wrapper"
+  ],
+  "contributors": [
+    "Jean-Philippe Eisenbarth",
+    "Philippe Kalitine <philippe.kalitine@gmail.com> (http://philippe.kalitine.name/)"
+  ],
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme",
+  "scripts": {
+    "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
+    "build": "rm -rf dist && rollup --config",
+    "postbuild": "cp -r src/misc dist/types/src/",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "karma start",
+    "test-node": "npm run pretest && jasmine --config=jasmine.json",
+    "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md -i 'CHANGELOG.md'",
+    "precommit": "lint-staged && npm test -- --single-run --no-auto-watch",
+    "pre-release": "npm run build",
+    "release": "standard-version --no-verify",
+    "cz": "git-cz"
+  },
   "peerDependencies": {
     "node-webcrypto-ossl": "^1.0.36"
   },
@@ -50,36 +80,6 @@
     "typedoc": "^0.11.1",
     "typescript": "^2.9.2"
   },
-  "scripts": {
-    "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
-    "build": "rm -rf dist && rollup --config",
-    "postbuild": "cp -r src/misc dist/types/src/",
-    "pretest": "tsc -p tsconfig.test.json",
-    "test": "karma start",
-    "test-node": "npm run pretest && jasmine --config=jasmine.json",
-    "lint": "tslint --fix -p tsconfig.json && prettier --write --list-different src/**/*.ts test/**/*.{ts,config.js} ./*.{ts,js,json,md} docs/**/*.md && markdownlint ./*.md -i 'CHANGELOG.md'",
-    "precommit": "lint-staged && npm test -- --single-run --no-auto-watch",
-    "pre-release": "npm run build",
-    "release": "standard-version --no-verify",
-    "cz": "git-cz"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/coast-team/crypto-api-wrapper.git"
-  },
-  "keywords": [
-    "webcrypto",
-    "wrapper"
-  ],
-  "contributors": [
-    "Jean-Philippe Eisenbarth",
-    "Philippe Kalitine <philippe.kalitine@gmail.com> (http://philippe.kalitine.name/)"
-  ],
-  "license": "Apache 2",
-  "bugs": {
-    "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
-  },
-  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme",
   "lint-staged": {
     "linters": {
       "*.md": [
