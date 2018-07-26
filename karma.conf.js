@@ -33,6 +33,9 @@ module.exports = function(config) {
         html: {},
         'text-summary': '',
       },
+      coverageOptions: {
+        exclude: /helper\.ts/,
+      },
     },
 
     // test results reporter to use possible values: 'dots', 'progress' available reporters:
