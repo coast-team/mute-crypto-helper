@@ -15,6 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import { env } from '../misc/env'
 import { defaultCryptoKeyDataFormat } from './helper/cryptoHelper'
 import {
   defaultImportEncryptionParams,
@@ -30,7 +31,7 @@ import {
  * @see {@link defaultSymmetricEncryptionParams}
  */
 export function generateEncryptionKey() {
-  return global.crypto.subtle.generateKey(
+  return env.crypto.subtle.generateKey(
     defaultSymmetricEncryptionParams,
     true, // whether the key is extractable (i.e. can be used in exportKey)
     ['encrypt', 'decrypt']
@@ -42,7 +43,7 @@ export function generateEncryptionKey() {
  * The CryptoKeyPair should be the same as returned by {@link generateEncryptionKey}.
  */
 export function exportKey(cryptoKey: CryptoKey) {
-  return global.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
+  return env.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKey) as Promise<JsonWebKey>
 }
 
 /**
@@ -64,7 +65,7 @@ export function fromB64(keyDataB64: string): JsonWebKey {
  * The JSON Web Key should be the same as returned by {@link exportKey}.
  */
 export function importKey(cryptoKeyData: JsonWebKey) {
-  return global.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams as any, true, [
+  return env.crypto.subtle.importKey(defaultCryptoKeyDataFormat, cryptoKeyData, defaultImportEncryptionParams as any, true, [
     'encrypt',
     'decrypt',
   ]) as Promise<CryptoKey>
@@ -77,7 +78,7 @@ export function importKey(cryptoKeyData: JsonWebKey) {
  */
 export async function encrypt(plaintext: Uint8Array, encryptionKey: CryptoKey) {
   const params = getDefaultEncryptParams(true)
-  const ciphertext = await global.crypto.subtle.encrypt(params, encryptionKey, plaintext)
+  const ciphertext = await env.crypto.subtle.encrypt(params, encryptionKey, plaintext)
   return joinNonceCiphertext(params.iv, new Uint8Array(ciphertext)) as Promise<Uint8Array>
 }
 
@@ -91,5 +92,5 @@ export async function decrypt(data: Uint8Array, encryptionKey: CryptoKey) {
   const [nonce, ciphertext] = await splitNonceCiphertext(data)
   const params = getDefaultEncryptParams(false)
   params.iv = nonce
-  return global.crypto.subtle.decrypt(params, encryptionKey, ciphertext).then((buffer) => new Uint8Array(buffer))
+  return env.crypto.subtle.decrypt(params, encryptionKey, ciphertext).then((buffer) => new Uint8Array(buffer))
 }

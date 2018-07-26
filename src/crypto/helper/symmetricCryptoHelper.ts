@@ -1,3 +1,5 @@
+import { env } from '../../misc/env'
+
 // Licensed to Inria Grand-Est / Loria under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -92,5 +94,5 @@ export function splitNonceCiphertext(data: Uint8Array): Promise<[Uint8Array, Uin
 }
 
 function generateNonce(): Uint8Array {
-  return global.crypto.getRandomValues(new Uint8Array(ivLength)) as Uint8Array
+  return env.crypto.getRandomValues(new Uint8Array(ivLength)) as Uint8Array
 }

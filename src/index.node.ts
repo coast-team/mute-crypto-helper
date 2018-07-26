@@ -1,9 +1,10 @@
+import { env } from './misc/env'
+
 try {
   const webcrypto = require('node-webcrypto-ossl')
-  global.crypto = new webcrypto()
+  env.crypto = new webcrypto() as Crypto
 } catch (err) {
-  console.warn(err.message)
-  global.process.exit(1)
+  console.error(err.message)
 }
 
 export * from './index.common'

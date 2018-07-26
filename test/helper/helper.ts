@@ -1,3 +1,5 @@
+import { env } from '../../src/misc/env'
+
 // Licensed to Inria Grand-Est / Loria under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -44,5 +46,5 @@ export function buffer2str(buffer: BufferSource) {
 }
 
 export function randomSecret(bytes: number) {
-  return global.crypto.getRandomValues(new Uint8Array(bytes)) as Uint8Array
+  return env.crypto.getRandomValues(new Uint8Array(bytes)) as Uint8Array
 }
