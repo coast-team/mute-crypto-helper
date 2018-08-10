@@ -1,6 +1,6 @@
 {
-  "name": "mute-crypto-helper",
-  "version": "1.0.0",
+  "name": "@coast-team/mute-crypto-helper",
+  "version": "0.6.5",
   "description": "## Web Crypto wrapper",
   "main": "dist/mute-crypto-helper.node.es5.cjs.js",
   "module": "dist/mute-crypto-helper.node.es5.esm.js",

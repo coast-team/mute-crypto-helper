@@ -1,67 +1,45 @@
-# Crypto API wrapper
+# Mute-Crypto-Helper
 
-This lib is a wrapper around the [Web Crypto API][1], it offers an API
-with sane defaults. The documentation can be found [here][2].
+[![Build Status](https://travis-ci.org/coast-team/mute-crypto-helper.svg?branch=master)](https://travis-ci.org/coast-team/mute-crypto-helper)
 
-## Installation
+Isomorphic API exporting helper functions for `mute-crypto` project. It is powered by [Web Crypto API][1] for the client side and by [node-webcrypto-ossl][3] for NodeJS. The documentation can be found [here][2].
+
+## Install
 
 ```sh
-npm i mute-crypto-helper
+npm install mute-crypto-helper
+```
+
+For NodeJS, `node-webcrypto-ossl` peer dependency is also required.
+
+```sh
+npm install node-webcrypto-oss
 ```
 
 ## Usage
 
-This lib exports 2 objects : asymmetricCrypto and symmetricCrypto
+This lib exports 2 objects: `asymmetricCrypto`, `symmetricCrypto` and `keyAgreementCrypto`.
 
-### asymmetricCrypto API
+## Tests
 
-- generateSigningKey()
-- generateEncryptionKey()
-- exportKey(keypair)
-- importKey(keydata)
-- sign(plaintext, privateKey)
-- verify(plaintext, signature, publicKey)
-- encrypt(plaintext, publicKey)
-- decrypt(ciphertext, privateKey)
-
-### symmetricCrypto API
-
-- generateEncryptionKey()
-- exportKey(encryptionKey)
-- toB64(keydata)
-- fromB64(keydataB64)
-- importKey(keydata)
-- encrypt(plaintext, encryptionKey)
-- decrypt(ciphertext, encryptionKey)
-
-[1]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
-[2]: https://coast-team.github.io/mute-crypto-helper/
-
-## Contributing
-
-### Install dependencies
-
-```sh
-npm i
-npm i --no-save node-webcrypto-ossl
-```
-
-### Run the tests
-
-Run the test in a browser :
+Run the test in a browser:
 
 ```sh
 npm run test
 ```
 
-Run the test with NodeJS :
+Run the test with NodeJS:
 
 ```sh
 npm run test-node
 ```
 
-### Generate the documentation
+## Generate the documentation
 
 ```sh
 npm run doc
 ```
+
+[1]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
+[2]: https://coast-team.github.io/mute-crypto-helper/
+[3]: https://github.com/PeculiarVentures/node-webcrypto-ossl
