@@ -16,12 +16,13 @@
     "url": "git+https://github.com/coast-team/mute-crypto-helper.git"
   },
   "keywords": [
+    "cryptography",
     "webcrypto",
-    "wrapper"
+    "keyagreement"
   ],
   "contributors": [
     "Jean-Philippe Eisenbarth",
-    "Philippe Kalitine <philippe.kalitine@gmail.com> (http://philippe.kalitine.name/)"
+    "Philippe Kalitine <philippe.kalitine@gmail.com> (https://philippe.kalitine.name/)"
   ],
   "license": "Apache-2.0",
   "bugs": {
