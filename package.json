@@ -24,6 +24,9 @@
     "Jean-Philippe Eisenbarth",
     "Philippe Kalitine <philippe.kalitine@gmail.com> (https://philippe.kalitine.name/)"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coast-team/mute-crypto-helper/issues"
@@ -42,7 +45,6 @@
     "precommit": "lint-staged && npm run test-node && npm run test-browser -- --single-run --no-auto-watch",
     "pre-release": "npm run build",
     "release": "standard-version --no-verify",
-    "publish": "npm publish --access public",
     "cz": "git-cz"
   },
   "peerDependencies": {
