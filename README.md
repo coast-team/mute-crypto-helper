@@ -6,7 +6,7 @@ with sane defaults. The documentation can be found [here][2].
 ## Installation
 
 ```sh
-npm i crypto-api-wrapper
+npm i mute-crypto-helper
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ This lib exports 2 objects : asymmetricCrypto and symmetricCrypto
 - decrypt(ciphertext, encryptionKey)
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
-[2]: https://coast-team.github.io/crypto-api-wrapper/
+[2]: https://coast-team.github.io/mute-crypto-helper/
 
 ## Contributing
 

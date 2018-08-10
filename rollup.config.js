@@ -45,7 +45,7 @@ export default [
     input: 'src/index.node.ts',
     output: [
       {
-        file: 'dist/crypto-api-wrapper.node.es5.cjs.js',
+        file: 'dist/mute-crypto-helper.node.es5.cjs.js',
         format: 'cjs',
         sourcemap: true,
       },
@@ -55,7 +55,7 @@ export default [
   {
     input: 'src/index.browser.ts',
     output: {
-      file: 'dist/crypto-api-wrapper.browser.es5.esm.js',
+      file: 'dist/mute-crypto-helper.browser.es5.esm.js',
       format: 'es',
       sourcemap: true,
     },
@@ -72,7 +72,7 @@ export default [
   {
     input: 'src/index.node.ts',
     output: {
-      file: 'dist/crypto-api-wrapper.node.es5.esm.js',
+      file: 'dist/mute-crypto-helper.node.es5.esm.js',
       format: 'es',
       sourcemap: true,
     },
@@ -81,7 +81,7 @@ export default [
   {
     input: 'src/index.browser.ts',
     output: {
-      file: 'dist/crypto-api-wrapper.browser.es2015.esm.js',
+      file: 'dist/mute-crypto-helper.browser.es2015.esm.js',
       format: 'es',
       sourcemap: true,
     },
@@ -90,7 +90,7 @@ export default [
   {
     input: 'src/index.browser.ts',
     output: {
-      file: 'dist/crypto-api-wrapper.browser.esnext.esm.js',
+      file: 'dist/mute-crypto-helper.browser.esnext.esm.js',
       format: 'es',
       sourcemap: true,
     },

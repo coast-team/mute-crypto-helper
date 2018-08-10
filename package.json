@@ -1,19 +1,19 @@
 {
-  "name": "crypto-api-wrapper",
-  "version": "0.6.5",
+  "name": "mute-crypto-helper",
+  "version": "1.0.0",
   "description": "## Web Crypto wrapper",
-  "main": "dist/crypto-api-wrapper.node.es5.cjs.js",
-  "module": "dist/crypto-api-wrapper.node.es5.esm.js",
-  "browser": "dist/crypto-api-wrapper.browser.es5.esm.js",
-  "es2015": "dist/crypto-api-wrapper.browser.es2015.esm.js",
-  "esnext": "dist/crypto-api-wrapper.browser.esnext.esm.js",
+  "main": "dist/mute-crypto-helper.node.es5.cjs.js",
+  "module": "dist/mute-crypto-helper.node.es5.esm.js",
+  "browser": "dist/mute-crypto-helper.browser.es5.esm.js",
+  "es2015": "dist/mute-crypto-helper.browser.es2015.esm.js",
+  "esnext": "dist/mute-crypto-helper.browser.esnext.esm.js",
   "types": "dist/types/src/index.node.d.ts",
   "files": [
     "dist/"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coast-team/crypto-api-wrapper.git"
+    "url": "git+https://github.com/coast-team/mute-crypto-helper.git"
   },
   "keywords": [
     "webcrypto",
@@ -25,9 +25,9 @@
   ],
   "license": "Apache 2",
   "bugs": {
-    "url": "https://github.com/coast-team/crypto-api-wrapper/issues"
+    "url": "https://github.com/coast-team/mute-crypto-helper/issues"
   },
-  "homepage": "https://github.com/coast-team/crypto-api-wrapper#readme",
+  "homepage": "https://github.com/coast-team/mute-crypto-helper#readme",
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
     "build": "rm -rf dist && rollup --config",
@@ -40,6 +40,7 @@
     "precommit": "lint-staged && npm run test-node && npm run test-browser -- --single-run --no-auto-watch",
     "pre-release": "npm run build",
     "release": "standard-version --no-verify",
+    "publish": "npm publish --access public",
     "cz": "git-cz"
   },
   "peerDependencies": {
@@ -67,7 +68,7 @@
     "markdownlint-cli": "^0.12.0",
     "node-webcrypto-ossl": "^1.0.37",
     "prettier": "^1.14.2",
-    "rollup": "^0.63.5",
+    "rollup": "^0.64.1",
     "rollup-plugin-cleanup": "^3.0.0",
     "rollup-plugin-commonjs": "^9.1.5",
     "rollup-plugin-filesize": "^4.0.1",

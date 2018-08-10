@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/coast-team/mute-crypto-helper/compare/v0.6.5...v1.0.0) (2018-08-10)
+
+
+
 <a name="0.6.5"></a>
 ## [0.6.5](https://github.com/coast-team/crypto-api-wrapper/compare/v0.6.4...v0.6.5) (2018-07-26)
 
