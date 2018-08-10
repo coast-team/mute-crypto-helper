@@ -32,6 +32,10 @@ module.exports = function(config) {
       reports: {
         html: {},
         'text-summary': '',
+        lcovonly: {
+          subdirectory: 'lcov',
+          filename: 'lcov.info',
+        },
       },
       coverageOptions: {
         exclude: /helper\.ts/,
