@@ -1,7 +1,7 @@
 {
   "name": "@coast-team/mute-crypto-helper",
   "version": "1.0.0-beta.0",
-  "description": "## Web Crypto wrapper",
+  "description": "Helper functions for mute-crypto package",
   "main": "dist/mute-crypto-helper.node.es5.cjs.js",
   "module": "dist/mute-crypto-helper.node.es5.esm.js",
   "browser": "dist/mute-crypto-helper.browser.es5.esm.js",
@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/coast-team/mute-crypto-helper/issues"
   },
-  "homepage": "https://github.com/coast-team/mute-crypto-helper#readme",
+  "homepage": "https://coast-team.github.io/mute-crypto-helper",
   "scripts": {
     "doc": "typedoc --theme minimal --out docs/ src/ && touch docs/.nojekyll",
     "build": "rm -rf dist && rollup --config",
