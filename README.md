@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/coast-team/mute-crypto-helper.svg?branch=master)](https://travis-ci.org/coast-team/mute-crypto-helper)
 [![install size](https://packagephobia.now.sh/badge?p=@coast-team/mute-crypto-helper@1.0.0-beta.0)](https://packagephobia.now.sh/result?p=@coast-team/mute-crypto-helper@1.0.0-beta.0)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/aa90039fe1c548e8af630adece29c558)](https://www.codacy.com/app/kalitine/mute-crypto-helper?utm_source=github.com&utm_medium=referral&utm_content=coast-team/mute-crypto-helper&utm_campaign=Badge_Coverage)
 
 Isomorphic API exporting helper functions for `mute-crypto` project. It is powered by [Web Crypto API][1] for the client side and by [node-webcrypto-ossl][3] for NodeJS. The documentation can be found [here][2].
 
