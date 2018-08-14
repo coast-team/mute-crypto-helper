@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "declarationDir": "dist/types",
     "target": "es5",
     "module": "es2015",
     "lib": ["es2017", "dom"],
