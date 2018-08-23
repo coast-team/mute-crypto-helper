@@ -27,19 +27,11 @@ import {
 import { defaultCryptoKeyDataFormat } from './helper/cryptoHelper'
 
 /**
- * An ICryptoKeyPairData consists of 2 JSON Web Keys, the public and private ones.
- */
-export interface ICryptoKeyPairData {
-  readonly publicKey: JsonWebKey
-  readonly privateKey: JsonWebKey
-}
-
-/**
  * generateSigningKey generates a cryptoKeyPair with sane defaults to be used for signing purpose.
  *
  * @see {@link defaultAsymmetricSigningParam}
  */
-export function generateSigningKey(): Promise<CryptoKeyPair> {
+export function generateSigningKeyPair(): Promise<CryptoKeyPair> {
   return env.crypto.subtle.generateKey(
     defaultAsymmetricSigningParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
@@ -52,7 +44,7 @@ export function generateSigningKey(): Promise<CryptoKeyPair> {
  *
  * @see {@link defaultAsymmetricEncryptionParam}
  */
-export function generateEncryptionKey(): Promise<CryptoKeyPair> {
+export function generateEncryptionKeyPair(): Promise<CryptoKeyPair> {
   return env.crypto.subtle.generateKey(
     defaultAsymmetricEncryptionParam,
     true, // whether the key is extractable (i.e. can be used in exportKey)
@@ -64,70 +56,35 @@ export function generateEncryptionKey(): Promise<CryptoKeyPair> {
  * exportKey exports a CryptoKeyPair to an {@link ICryptoKeyPairData}.
  * The CryptoKeyPair should be the same as returned by {@link generateSigningKey} or {@link generateEncryptionKey}.
  */
-export async function exportKey(cryptoKeyPair: CryptoKeyPair): Promise<ICryptoKeyPairData> {
-  const publicKey = await env.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.publicKey)
-  const privateKey = await env.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, cryptoKeyPair.privateKey)
-  return { publicKey, privateKey } as ICryptoKeyPairData
+export async function exportKey(key: CryptoKey): Promise<JsonWebKey> {
+  return env.crypto.subtle.exportKey(defaultCryptoKeyDataFormat, key)
 }
 
 /**
  * importKey imports an ICryptoKeyPairData to a CryptoKeyPair.
  * The ICryptoKeyPairData should be the same as returned by {@link exportKey}.
  */
-export async function importKey(cryptoKeyPairData: ICryptoKeyPairData): Promise<CryptoKeyPair> {
+export async function importKey(key: JsonWebKey): Promise<CryptoKey> {
   const UndefinedKeyOpsError = new TypeError(`key_ops should not be undefined.\
     cryptoKeyPairData should be the same object as returned by exportKey ...`)
 
-  let publicKey: CryptoKey
-  let privateKey: CryptoKey
-  if (cryptoKeyPairData.publicKey.key_ops) {
-    if (cryptoKeyPairData.publicKey.key_ops.includes('verify')) {
-      publicKey = await env.crypto.subtle.importKey(
-        defaultCryptoKeyDataFormat,
-        cryptoKeyPairData.publicKey,
-        defaultImportSigningParam,
-        true,
-        ['verify']
-      )
-    } else if (cryptoKeyPairData.publicKey.key_ops.includes('encrypt')) {
-      publicKey = await env.crypto.subtle.importKey(
-        defaultCryptoKeyDataFormat,
-        cryptoKeyPairData.publicKey,
-        defaultImportEncryptionParam,
-        true,
-        ['encrypt']
-      )
+  if (key.key_ops) {
+    let options: [any, string]
+    if (key.key_ops.includes('verify')) {
+      options = [defaultImportSigningParam, 'verify']
+    } else if (key.key_ops.includes('encrypt')) {
+      options = [defaultImportEncryptionParam, 'encrypt']
+    } else if (key.key_ops.includes('sign')) {
+      options = [defaultImportSigningParam, 'sign']
+    } else if (key.key_ops.includes('decrypt')) {
+      options = [defaultImportEncryptionParam, 'decrypt']
     } else {
-      return Promise.reject(UndefinedKeyOpsError)
+      throw UndefinedKeyOpsError
     }
+    return env.crypto.subtle.importKey(defaultCryptoKeyDataFormat, key, options[0], true, [options[1]])
   } else {
-    return Promise.reject(UndefinedKeyOpsError)
+    throw UndefinedKeyOpsError
   }
-
-  if (cryptoKeyPairData.privateKey.key_ops) {
-    if (cryptoKeyPairData.privateKey.key_ops.includes('sign')) {
-      privateKey = await env.crypto.subtle.importKey(
-        defaultCryptoKeyDataFormat,
-        cryptoKeyPairData.privateKey,
-        defaultImportSigningParam,
-        true,
-        ['sign']
-      )
-    } else if (cryptoKeyPairData.privateKey.key_ops.includes('decrypt')) {
-      privateKey = await env.crypto.subtle.importKey(
-        defaultCryptoKeyDataFormat,
-        cryptoKeyPairData.privateKey,
-        defaultImportEncryptionParam,
-        true,
-        ['decrypt']
-      )
-    } else {
-      return Promise.reject(UndefinedKeyOpsError)
-    }
-  } else {
-    return Promise.reject(UndefinedKeyOpsError)
-  }
-  return { publicKey, privateKey } as CryptoKeyPair
 }
 
 /**
