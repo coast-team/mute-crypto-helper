@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/coast-team/mute-crypto-helper/compare/v1.0.0-beta.0...v1.0.0) (2018-08-28)
+
+
+### Bug Fixes
+
+* **helper:** wrong arrays lengths comparison ([568898b](https://github.com/coast-team/mute-crypto-helper/commit/568898b))
+
+
+### Code Refactoring
+
+* **asymmetric:** change exportKey and importKey signature ([3df7153](https://github.com/coast-team/mute-crypto-helper/commit/3df7153))
+
+
+### BREAKING CHANGES
+
+* **asymmetric:** 1) ICryptoKeyPairData is no longer exported by the API. 2)
+asymmetricCrypto.importKey takes JsonWebKey as parameter and returns CryptoKey. 3)
+asymmetricCrypto.exportKey takes CryptoKey as parameter and returns JsonWebKey.
+
+
+
 <a name="1.0.0-beta.0"></a>
 # [1.0.0-beta.0](https://github.com/coast-team/mute-crypto-helper/compare/v0.6.5...v1.0.0-beta.0) (2018-08-10)
 
