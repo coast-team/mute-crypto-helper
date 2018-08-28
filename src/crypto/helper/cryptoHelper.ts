@@ -22,7 +22,7 @@ export function int8ArrayEqual(array1: Uint8Array, array2: Uint8Array): boolean 
     return true
   }
 
-  if (array1.byteLength !== array1.byteLength) {
+  if (array1.byteLength !== array2.byteLength) {
     return false
   }
 
