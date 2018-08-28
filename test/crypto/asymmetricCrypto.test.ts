@@ -25,79 +25,42 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
   const UndefinedKeyOpsError = `key_ops should not be undefined.\
     cryptoKeyPairData should be the same object as returned by exportKey ...`
 
-  beforeAll((done) => {
-    asymCrypto
-      .generateSigningKeyPair()
-      .then((key) => {
-        cryptoSigningKeypair = key
-        return asymCrypto.generateEncryptionKeyPair()
-      })
-      .then((key2) => {
-        cryptoEncryptionKeypair = key2
-        done()
-      })
-      .catch(fail)
+  beforeAll(async () => {
+    cryptoSigningKeypair = await asymCrypto.generateSigningKeyPair()
+    cryptoEncryptionKeypair = await asymCrypto.generateEncryptionKeyPair()
   })
 
-  it('exportKey(publicKey), importKey should succeed (key is a signing KeyPair)', (done) => {
-    asymCrypto
-      .exportKey(cryptoSigningKeypair.publicKey)
-      .then((keyDataObj) => {
-        asymCrypto
-          .importKey(keyDataObj)
-          .then((keyPair) => {
-            expect(cryptoSigningKeypair.publicKey).toEqual(keyPair)
-            done()
-          })
-          .catch(fail)
-      })
-      .catch(fail)
+  it('exportKey(publicKey), importKey should succeed (key is a signing KeyPair)', async () => {
+    const pkJson = await asymCrypto.exportKey(cryptoSigningKeypair.publicKey)
+    const pk = await asymCrypto.importKey(pkJson)
+    expect(cryptoSigningKeypair.publicKey).toEqual(pk)
   })
 
-  it('exportKey(privateKey), importKey should succeed (key is a signing KeyPair)', (done) => {
-    asymCrypto
-      .exportKey(cryptoSigningKeypair.privateKey)
-      .then((keyDataObj) => {
-        asymCrypto
-          .importKey(keyDataObj)
-          .then((keyPair) => {
-            expect(cryptoSigningKeypair.privateKey).toEqual(keyPair)
-            done()
-          })
-          .catch(fail)
-      })
-      .catch(fail)
+  it('exportKey(privateKey), importKey should succeed (key is a signing KeyPair)', async () => {
+    const pkJson = await asymCrypto.exportKey(cryptoSigningKeypair.privateKey)
+    const pk = await asymCrypto.importKey(pkJson)
+    expect(cryptoSigningKeypair.privateKey).toEqual(pk)
   })
 
-  it('exportKey(publicKey), importKey should succeed (key is a encryption KeyPair)', (done) => {
-    asymCrypto
-      .exportKey(cryptoEncryptionKeypair.publicKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(cryptoEncryptionKeypair.publicKey).toEqual(keyPair)
-        done()
-      })
-      .catch(fail)
+  it('exportKey(publicKey), importKey should succeed (key is a encryption KeyPair)', async () => {
+    const pkJson = await asymCrypto.exportKey(cryptoEncryptionKeypair.publicKey)
+    const pk = await asymCrypto.importKey(pkJson)
+    expect(cryptoEncryptionKeypair.publicKey).toEqual(pk)
   })
 
-  it('exportKey(privateKey), importKey should succeed (key is a encryption KeyPair)', (done) => {
-    asymCrypto
-      .exportKey(cryptoEncryptionKeypair.privateKey)
-      .then((keyDataObj) => asymCrypto.importKey(keyDataObj))
-      .then((keyPair) => {
-        expect(cryptoEncryptionKeypair.privateKey).toEqual(keyPair)
-        done()
-      })
-      .catch(fail)
+  it('exportKey(privateKey), importKey should succeed (key is a encryption KeyPair)', async () => {
+    const pkJson = await asymCrypto.exportKey(cryptoEncryptionKeypair.privateKey)
+    const pk = await asymCrypto.importKey(pkJson)
+    expect(cryptoEncryptionKeypair.privateKey).toEqual(pk)
   })
 
   /*
       IMPORTKEY (fail)
     */
 
-  it('importKey(key) should throw a TypeError if the key is a JsonWebKey that do not contain key_ops', (done) => {
-    asymCrypto
-      .importKey({
+  it('importKey(key) should throw a TypeError if the key is a JsonWebKey that do not contain key_ops', async () => {
+    try {
+      await asymCrypto.importKey({
         alg: 'PS256',
         d:
           'YrvV7PBkjiNEljI0dpJJAFjT-YhJ_dZ-uzWB2VNU01vLaCL4-i_EpAY2Ns-P_iIemw30RnrXZ4xCoimEXjI6SRApIl7DChrw9ct0GLGzNtz-Uf2Q49sAtcUNfkQCcAV-kB-Fr_q5cR_2pAoc3dY4hjyM8_5taZ1dlm8ov3OwdQjmzdfhmzwtHmpw805xFdMAZmUtIRelkyaj6Uc9ja4PMO5-Kmvf9a5hPdwJF3nGVuy5IiaN_cv5_T4jd3p5SRDXvSf4h_Wr0BqltIDpE3bvb1pJP35oXfhmaoOND4s9WflNxjP2A53o_TJtpblUkd84bnaEovSymJrj0hzW1FKr1Q',
@@ -117,17 +80,15 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
         qi:
           'thTQiQFnYH9fbGXLNDY6_hoCCpUlAjACw3atW4PH7IApF9wEVQp5lH4C6OVb1QUeu-kHD1ae4UoMeGmtMGzAfUn2ZOEB3V88MSejeYJz6dLLgdZXHmJzZOtqWsYE4F9KVBb7xdOvYjMiCNRqCz3tCqY1sgTa3pXIxbb_GZQt6Ts',
       })
-      .then(fail)
-      .catch((err) => {
-        expect(err.constructor.name).toEqual(importKeyError)
-        expect(err.message).toEqual(UndefinedKeyOpsError)
-        done()
-      })
+    } catch (err) {
+      expect(err.constructor.name).toEqual(importKeyError)
+      expect(err.message).toEqual(UndefinedKeyOpsError)
+    }
   })
 
-  it('importKey(key) should throw a TypeError if the key is a JsonWebKey that do have wrong content for key_ops', (done) => {
-    asymCrypto
-      .importKey({
+  it('importKey(key) should throw a TypeError if the key is a JsonWebKey that do have wrong content for key_ops', async () => {
+    try {
+      await asymCrypto.importKey({
         kty: 'RSA',
         e: 'AQAB',
         n:
@@ -136,43 +97,22 @@ describe('Asymmetric Crypto API wrapper test\n', () => {
         ext: true,
         key_ops: [''],
       })
-      .then(fail)
-      .catch((err) => {
-        expect(err.constructor.name).toEqual(importKeyError)
-        expect(err.message).toEqual(UndefinedKeyOpsError)
-        done()
-      })
+    } catch (err) {
+      expect(err.constructor.name).toEqual(importKeyError)
+      expect(err.message).toEqual(UndefinedKeyOpsError)
+    }
   })
 
-  it('sign, verify', (done) => {
+  it('sign, verify', async () => {
     const data = helper.randStr()
-    asymCrypto
-      .sign(data, cryptoSigningKeypair.privateKey)
-      .then((signature) =>
-        asymCrypto
-          .verifySignature(data, signature, cryptoSigningKeypair.publicKey)
-          .then((isValid) => {
-            expect(isValid).toBeTruthy()
-            done()
-          })
-          .catch(fail)
-      )
-      .catch(fail)
+    const signature = await asymCrypto.sign(data, cryptoSigningKeypair.privateKey)
+    await asymCrypto.verifySignature(data, signature, cryptoSigningKeypair.publicKey)
   })
 
-  it('encrypt() decrypt()', (done) => {
+  it('encrypt() decrypt()', async () => {
     const data = helper.randStr()
-    asymCrypto
-      .encrypt(data, cryptoEncryptionKeypair.publicKey)
-      .then((encryptedData) =>
-        asymCrypto
-          .decrypt(encryptedData, cryptoEncryptionKeypair.privateKey)
-          .then((plaintext) => {
-            expect(plaintext).toEqual(data)
-            done()
-          })
-          .catch(fail)
-      )
-      .catch(fail)
+    const encryptedData = await asymCrypto.encrypt(data, cryptoEncryptionKeypair.publicKey)
+    const plaintext = await asymCrypto.decrypt(encryptedData, cryptoEncryptionKeypair.privateKey)
+    expect(plaintext).toEqual(data)
   })
 })

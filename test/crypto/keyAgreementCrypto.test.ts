@@ -41,27 +41,13 @@ describe('Key Agreement Crypto API wrapper test\n', () => {
     )
   })
 
-  it('deriveKey(sharedSecret) should succeed', (done) => {
+  it('deriveKey(sharedSecret) should succeed', async () => {
     const sharedSecret = helper.randomSecret(10)
-    keyAgreementCrypto
-      .deriveKey(sharedSecret)
-      .then((secretKey1) => {
-        keyAgreementCrypto
-          .deriveKey(sharedSecret)
-          .then((secretKey2) => {
-            const s = 'Hello, world'
-            symCrypto
-              .encrypt(helper.str2buffer(s), secretKey1)
-              .then((ciphertext) => symCrypto.decrypt(ciphertext, secretKey1))
-              .then((plaintext) => {
-                expect(helper.buffer2str(plaintext)).toEqual(s)
-                done()
-              })
-              .catch(fail)
-          })
-          .catch(fail)
-      })
-      .catch(fail)
+    const secretKey1 = await keyAgreementCrypto.deriveKey(sharedSecret)
+    const s = 'Hello, world'
+    const ciphertext = await symCrypto.encrypt(helper.str2buffer(s), secretKey1)
+    const plaintext = await symCrypto.decrypt(ciphertext, secretKey1)
+    expect(helper.buffer2str(plaintext)).toEqual(s)
   })
 
   it('ComputeXi with 2 users should equal 1', () => {
