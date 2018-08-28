@@ -20,7 +20,7 @@ import { keyAgreementCrypto } from '../../src/index.common'
 import { symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
 
-describe('Key Agreement Crypto API wrapper test\n', () => {
+describe('Key Agreement Crypto API wrapper test', () => {
   let globalR1: BN
   let globalR2: BN
   let globalR3: BN

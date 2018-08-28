@@ -20,7 +20,7 @@ import * as symCryptoHelper from '../../src/crypto/helper/symmetricCryptoHelper'
 import { symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
 
-describe('Symmetric Crypto API wrapper test\n', () => {
+describe('Symmetric Crypto API wrapper test', () => {
   let encryptionKey: CryptoKey
 
   beforeAll(async () => {

@@ -18,7 +18,7 @@
 import { asymmetricCrypto as asymCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
 
-describe('Asymmetric Crypto API wrapper test\n', () => {
+describe('Asymmetric Crypto API wrapper test', () => {
   let cryptoSigningKeypair: CryptoKeyPair
   let cryptoEncryptionKeypair: CryptoKeyPair
   const importKeyError = 'TypeError'
