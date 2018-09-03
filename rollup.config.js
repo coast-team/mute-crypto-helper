@@ -51,6 +51,7 @@ export default [
         sourcemap: true,
       },
     ],
+    external: ['node-webcrypto-ossl', 'buffer'],
     plugins: [typescript(), resolve(), commonjs(commonjsConfig), filesize(filesizeConfig), cleanup()],
   },
   {
@@ -77,6 +78,7 @@ export default [
       format: 'es',
       sourcemap: true,
     },
+    external: ['node-webcrypto-ossl', 'buffer'],
     plugins: [typescript(tsConfigDeclaration), resolve(), commonjs(commonjsConfig), filesize(filesizeConfig), cleanup()],
   },
   {
@@ -86,7 +88,15 @@ export default [
       format: 'es',
       sourcemap: true,
     },
-    plugins: [typescript(tsConfigEs2015), resolve(), commonjs(commonjsConfig), filesize(filesizeConfig), cleanup()],
+    plugins: [
+      typescript(tsConfigEs2015),
+      resolve({
+        browser: true,
+      }),
+      commonjs(commonjsConfig),
+      filesize(filesizeConfig),
+      cleanup(),
+    ],
   },
   {
     input: 'src/index.browser.ts',
@@ -95,6 +105,14 @@ export default [
       format: 'es',
       sourcemap: true,
     },
-    plugins: [typescript(tsConfigEsNext), resolve(), commonjs(commonjsConfig), filesize(filesizeConfig), cleanup()],
+    plugins: [
+      typescript(tsConfigEsNext),
+      resolve({
+        browser: true,
+      }),
+      commonjs(commonjsConfig),
+      filesize(filesizeConfig),
+      cleanup(),
+    ],
   },
 ]
