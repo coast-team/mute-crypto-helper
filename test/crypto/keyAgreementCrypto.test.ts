@@ -15,9 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import { BN } from '../../src/index.common'
-import { keyAgreementCrypto } from '../../src/index.common'
-import { symmetricCrypto as symCrypto } from '../../src/index.common'
+import { BN, keyAgreementCrypto, symmetricCrypto as symCrypto } from '../../src/index.common'
 import * as helper from '../helper/helper'
 
 describe('Key Agreement Crypto API wrapper test', () => {
