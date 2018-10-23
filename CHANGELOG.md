@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/coast-team/mute-crypto-helper/compare/v1.0.2...v1.0.3) (2018-10-23)
 
+### Bug Fixes
+
+* **build:** dist was not included in the previous release
 
 
 <a name="1.0.2"></a>
